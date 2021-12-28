@@ -9,6 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -23,7 +25,6 @@ public class HelloController {
 
     @FXML
     BorderPane bp;
-
     Stage stage;
     @FXML
     private FileChooser fc;
@@ -34,6 +35,8 @@ public class HelloController {
     private ListView<String> items;
     @FXML
     private TextField text;
+    @FXML
+    private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
 
     @FXML
     protected void initialize() {
@@ -45,15 +48,30 @@ public class HelloController {
     protected void chooseFile(ActionEvent actionEvent) throws IOException {
         File file = fc.showOpenDialog(stage);
         if (file != null) {
-            liste.add(file.getAbsolutePath());
-            liste.add((Paths.get("").toAbsolutePath()).toString());
-            liste.add((FileSystems.getDefault().getPath("src\\main\\resources\\images").toAbsolutePath()).toString());
+            liste.add(file.getName());
             items.setItems(liste);
             Path source = Paths.get(file.getAbsolutePath());
-
             Path dest = Paths.get("src/main/resources/images/" + file.getName());
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
+            Image image = new Image(dest.toFile().toURI().toURL().toString());
+            imageView.setImage(image);
+            blueRedGreen.setImage(image);
+            blackAndWhite.setImage(image);
+            sepia.setImage(image);
+            prewitt.setImage(image);
         }
+    }
+
+    @FXML
+    public void showImage() {
+        String file = items.getSelectionModel().getSelectedItem();
+        Path source = Paths.get("src/main/resources/images/" + file);
+        Image image = new Image(source.toFile().toURI().toString());
+        imageView.setImage(image);
+        blueRedGreen.setImage(image);
+        blackAndWhite.setImage(image);
+        sepia.setImage(image);
+        prewitt.setImage(image);
     }
 
     public void setStage(Stage stage) {

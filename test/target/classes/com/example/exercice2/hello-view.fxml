@@ -6,6 +6,12 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -19,7 +25,7 @@
          <children>
             <TextField fx:id="text" />
             <ListView id="tags" prefHeight="200.0" prefWidth="200.0" />
-            <ListView fx:id="items" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0" />
          </children>
         </VBox>
     </left>
@@ -32,9 +38,9 @@
          </children></VBox>
     </right>
     <center>
-        <ImageView fitHeight="181.0" fitWidth="322.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+        <ImageView fx:id="imageView" fitHeight="217.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../../../images/COD_HD.jpg" />
+            <Image url="@../../../images/placeholder-image.png" />
          </image></ImageView>
     </center>
    <top>
@@ -42,38 +48,57 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu mnemonicParsing="false" text="Ajouter une image" />
-                <Menu mnemonicParsing="false" text="Edit">
+                <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem fx:id="pickImage" onAction="#chooseFile" mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile" text="Ajouter une image" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: pink;">
                     <children>
-                        <ImageView fx:id="filter" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../images/placeholder-image.png" />
                             </image>
+                     <effect>
+                        <Glow />
+                     </effect>
                         </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" />
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../images/placeholder-image.png" />
                             </image>
+                     <effect>
+                        <BoxBlur />
+                     </effect>
                         </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" />
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../images/placeholder-image.png" />
                             </image>
+                     <effect>
+                        <SepiaTone />
+                     </effect>
                         </ImageView>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/placeholder-image.png" />
+                     </image>
+                     <effect>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </effect>
+                  </ImageView>
                     </children>
                 </HBox>
          </children>
