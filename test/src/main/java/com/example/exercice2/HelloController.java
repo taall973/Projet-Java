@@ -1,6 +1,5 @@
 package com.example.exercice2;
 
-import java.awt.Desktop;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -15,56 +15,50 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
 
-    private Desktop desktop = Desktop.getDesktop();
-
     @FXML
     BorderPane bp;
-    @FXML
+
     Stage stage;
     @FXML
     private FileChooser fc;
     @FXML
-    private Menu pickImage;
-    private ObservableList<String> liste = FXCollections.observableArrayList("item1", "item2", "item3", "...");
+    private MenuItem pickImage;
+    private ObservableList<String> liste = FXCollections.observableArrayList();
     @FXML
-    private ListView<File> items;
+    private ListView<String> items;
     @FXML
     private TextField text;
 
     @FXML
     protected void initialize() {
-        //items.setItems(liste);
-        stage = (Stage) bp.getScene().getWindow();
-        System.out.println("Done");
+        items.setItems(liste);
+        fc = new FileChooser();
     }
 
     @FXML
-    protected void chooseFile() {
-        pickImage.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                File file = fc.showOpenDialog(stage);
-                if (file != null) {
-                    openFile(file);
-                    List<File> files = Arrays.asList(file);
-                    ObservableList<File> listF = (ObservableList<File>) files;
-                    items.setItems(listF);
-                }
-            }
-        });
-    }
+    protected void chooseFile(ActionEvent actionEvent) throws IOException {
+        File file = fc.showOpenDialog(stage);
+        if (file != null) {
+            liste.add(file.getAbsolutePath());
+            liste.add((Paths.get("").toAbsolutePath()).toString());
+            liste.add((FileSystems.getDefault().getPath("src\\main\\resources\\images").toAbsolutePath()).toString());
+            items.setItems(liste);
+            Path source = Paths.get(file.getAbsolutePath());
 
-    private void openFile(File file) {
-        try {
-            this.desktop.open(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+            Path dest = Paths.get("src/main/resources/images/" + file.getName());
+            Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
 
 }

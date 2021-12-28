@@ -42,10 +42,10 @@
          <children>
             <MenuBar>
               <menus>
-                <Menu fx:id="pickImage" mnemonicParsing="false" onAction="#" text="Ajouter une image" />
+                <Menu mnemonicParsing="false" text="Ajouter une image" />
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem fx:id="pickImage" onAction="#chooseFile" mnemonicParsing="false" text="Delete" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
