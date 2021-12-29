@@ -51,7 +51,7 @@ public class HelloController {
             boolean unique = true;
             for (String elmt : liste) {
                 if (elmt.equals(file.getName())) {
-                    Alert sameName = new Alert(Alert.AlertType.INFORMATION,"Un fichier enregistré à ce nom existe déjà !");
+                    Alert sameName = new Alert(Alert.AlertType.INFORMATION, "Un fichier enregistré à ce nom existe déjà !");
                     sameName.setTitle("Doublon détecté");
                     sameName.setHeaderText(null);
                     sameName.show();
@@ -66,9 +66,9 @@ public class HelloController {
             Path dest = Paths.get("src/main/resources/images/" + file.getName());
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
             Image image = new Image(dest.toFile().toURI().toURL().toString());
+            FilterImage filteredImage = new FilterImage(image);
             imageView.setImage(image);
-
-            blueRedGreen.setImage(image);
+            blueRedGreen.setImage(filteredImage.firstFilter());
             blackAndWhite.setImage(image);
             sepia.setImage(image);
             prewitt.setImage(image);
@@ -80,11 +80,9 @@ public class HelloController {
         String file = items.getSelectionModel().getSelectedItem();
         Path source = Paths.get("src/main/resources/images/" + file);
         Image image = new Image(source.toFile().toURI().toString());
+        filterImage = new FilterImage(image);
         imageView.setImage(image);
-        filterImage = new FilterImage(imageView.getImage());
-        Image imag1 = filterImage.firstFilter();
-        imageView.setImage(imag1);
-        blueRedGreen.setImage(image);
+        blueRedGreen.setImage(filterImage.firstFilter());
         blackAndWhite.setImage(image);
         sepia.setImage(image);
         prewitt.setImage(image);
