@@ -22,7 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
-    private FilterImage filter  = new FilterImage("hello world");
+    private Image image = new Image("file:../resources/images/chevre.jpg");
+    private FilterImage filter  = new FilterImage(image);
     @FXML
     BorderPane bp;
     Stage stage;
@@ -42,6 +43,7 @@ public class HelloController {
     protected void initialize() {
         items.setItems(liste);
         fc = new FileChooser();
+
     }
 
     @FXML
@@ -85,7 +87,5 @@ public class HelloController {
         }
         //commentaire test
     }
-    public void direcoucou () {
-        filter.coucou();
-    }
+
 }
