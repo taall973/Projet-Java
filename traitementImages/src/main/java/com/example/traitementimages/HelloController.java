@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
-    private FilterImage filter  = new FilterImage("hello world");
     @FXML
     BorderPane bp;
     Stage stage;
@@ -37,9 +36,13 @@ public class HelloController {
     private TextField text;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
+    private Image img;
+    private FilterImage filter;
 
     @FXML
     protected void initialize() {
+        img = imageView.getImage();
+        filter = new FilterImage(img);
         items.setItems(liste);
         fc = new FileChooser();
     }
@@ -85,7 +88,7 @@ public class HelloController {
         }
         //commentaire test
     }
-    public void direcoucou () {
+    /*public void direcoucou () {
         filter.coucou();
-    }
+    }*/
 }
