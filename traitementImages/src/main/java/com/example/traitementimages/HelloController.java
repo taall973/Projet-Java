@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -25,6 +26,8 @@ public class HelloController {
     @FXML
     BorderPane bp;
     Stage stage;
+    @FXML
+    private HBox filters;
     @FXML
     private FileChooser fc;
     @FXML
@@ -41,6 +44,8 @@ public class HelloController {
 
     @FXML
     protected void initialize() {
+        //imageView.fitHeightProperty().bind(filters.heightProperty());
+        blueRedGreen.setFitHeight(2 * filters.getHeight() / 5);
         img = imageView.getImage();
         filter = new FilterImage(img);
         items.setItems(liste);
