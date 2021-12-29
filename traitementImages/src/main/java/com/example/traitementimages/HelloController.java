@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -23,11 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
+
+    private FilterImage filterImage;
     @FXML
     BorderPane bp;
     Stage stage;
-    @FXML
-    private HBox filters;
     @FXML
     private FileChooser fc;
     @FXML
@@ -39,17 +38,14 @@ public class HelloController {
     private TextField text;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
-    private Image img;
-    private FilterImage filter;
 
     @FXML
     protected void initialize() {
-        //imageView.fitHeightProperty().bind(filters.heightProperty());
-        blueRedGreen.setFitHeight(2 * filters.getHeight() / 5);
-        img = imageView.getImage();
-        filter = new FilterImage(img);
-        items.setItems(liste);
+        loadImages();
         fc = new FileChooser();
+        filterImage = new FilterImage(imageView.getImage());
+        imageView.setImage(filterImage.firstFilter());
+
     }
 
     @FXML
@@ -63,6 +59,10 @@ public class HelloController {
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
             Image image = new Image(dest.toFile().toURI().toURL().toString());
             imageView.setImage(image);
+            filterImage = new FilterImage(imageView.getImage());
+            Image imag1 = filterImage.firstFilter();
+            imageView.setImage(imag1);
+
             blueRedGreen.setImage(image);
             blackAndWhite.setImage(image);
             sepia.setImage(image);
@@ -76,6 +76,9 @@ public class HelloController {
         Path source = Paths.get("src/main/resources/images/" + file);
         Image image = new Image(source.toFile().toURI().toString());
         imageView.setImage(image);
+        filterImage = new FilterImage(imageView.getImage());
+        Image imag1 = filterImage.firstFilter();
+        imageView.setImage(imag1);
         blueRedGreen.setImage(image);
         blackAndWhite.setImage(image);
         sepia.setImage(image);
@@ -87,13 +90,11 @@ public class HelloController {
     }
 
     public void loadImages() {
-        File directory = new File("/src/main/resources/images/");
+        File directory = Paths.get("src/main/resources/images/").toFile();
         for (File file : directory.listFiles()) {
-            System.out.println(file.getName());
+            liste.add(file.getName());
         }
-        //commentaire test
+        items.setItems(liste);
     }
-    /*public void direcoucou () {
-        filter.coucou();
-    }*/
+
 }
