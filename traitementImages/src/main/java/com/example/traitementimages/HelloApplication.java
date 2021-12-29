@@ -17,7 +17,8 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
-        System.out.println("hello");
+
+    //ceci est mon commentaire
     }
 
     public static void main(String[] args) {
