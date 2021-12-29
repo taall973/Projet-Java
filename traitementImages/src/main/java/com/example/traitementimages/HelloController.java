@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
+
+    private FilterImage filterImage ;
     @FXML
     BorderPane bp;
     Stage stage;
@@ -36,15 +38,14 @@ public class HelloController {
     private TextField text;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
-    private Image img;
-    private FilterImage filter;
 
     @FXML
     protected void initialize() {
-        img = imageView.getImage();
-        filter = new FilterImage(img);
         items.setItems(liste);
         fc = new FileChooser();
+        filterImage = new FilterImage(imageView.getImage()) ;
+        Image img1= filterImage.firstFilter();
+        imageView.setImage(img1);
     }
 
     @FXML
@@ -58,6 +59,9 @@ public class HelloController {
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
             Image image = new Image(dest.toFile().toURI().toURL().toString());
             imageView.setImage(image);
+            filterImage = new FilterImage(imageView.getImage()) ;
+            Image img1= filterImage.firstFilter();
+            imageView.setImage(img1);
             blueRedGreen.setImage(image);
             blackAndWhite.setImage(image);
             sepia.setImage(image);
@@ -88,7 +92,5 @@ public class HelloController {
         }
         //commentaire test
     }
-    /*public void direcoucou () {
-        filter.coucou();
-    }*/
+
 }

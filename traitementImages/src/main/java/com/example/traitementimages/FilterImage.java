@@ -19,18 +19,27 @@ public class FilterImage {
         this.height = (int) image.getHeight() ;
         this.width = (int) image.getWidth() ;
         System.out.println(this.width + " " + this.height);
-       // this.writableImage = new WritableImage(this.pixelReader , this.width , this.height) ;
+        this.writableImage = new WritableImage(this.pixelReader , this.width , this.height) ;
+        pixelWriter= writableImage.getPixelWriter() ;
     }
 
-//    public void firstFilter (){
-//        int pix =0 ;
-//        for ( int i=0 ; i < this.width ; i++) {
-//            for (int j = 0; j < this.height; j++) {
-//                pix = this.pixelReader.getArgb(i , j) ;
-//                System.out.println(pix);
-//            }
-//        }
-//    }
+    public Image firstFilter (){
+        int pix =0 ;
+        for ( int i=0 ; i < this.width ; i++) {
+            for (int j = 0; j < this.height; j++) {
+                int pixel = pixelReader.getArgb(i, j);
 
+                int alpha = ((pixel >> 24) & 0xff);
+                int red = ((pixel >> 16) & 0xff);
+                int green = ((pixel >> 8) & 0xff);
+                int blue = (pixel & 0xff);
+                int gray = (alpha << 24) ;
+                System.out.print(gray);
+                pixelWriter.setArgb(i, j, gray);
+
+            }
+        }
+        return writableImage ;
+    }
 
 }
