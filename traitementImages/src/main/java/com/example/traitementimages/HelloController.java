@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HelloController {
-
+    private FilterImage filter  = new FilterImage("hello world");
     @FXML
     BorderPane bp;
     Stage stage;
@@ -84,5 +84,8 @@ public class HelloController {
             System.out.println(file.getName());
         }
         //commentaire test
+    }
+    public void direcoucou () {
+        filter.coucou();
     }
 }
