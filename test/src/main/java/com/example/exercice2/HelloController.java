@@ -78,5 +78,12 @@ public class HelloController {
         this.stage = stage;
     }
 
+    public void loadImages() {
+        File directory = new File("/src/main/resources/images/");
+        for (File file : directory.listFiles()) {
+            System.out.println(file.getName());
+        }
+    }
+
 
 }
