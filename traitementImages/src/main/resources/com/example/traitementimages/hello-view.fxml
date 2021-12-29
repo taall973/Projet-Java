@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traitementimages.HelloController">
+    <left>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightblue;"
+              BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="text"/>
+                <ListView id="tags" prefHeight="200.0" prefWidth="200.0"/>
+                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0"/>
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: darkgreen;"
+              BorderPane.alignment="CENTER">
+            <children>
+                <TextField/>
+                <ListView prefHeight="200.0" prefWidth="200.0"/>
+                <PasswordField/>
+            </children>
+        </VBox>
+    </right>
+    <center>
+        <ImageView fx:id="imageView" fitHeight="217.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true"
+                   BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@../../../images/placeholder-image.png"/>
+            </image>
+        </ImageView>
+    </center>
+    <top>
+        <VBox alignment="TOP_CENTER" prefWidth="600.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile"
+                                          text="Ajouter une image"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: pink;">
+                    <children>
+                        <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../../images/placeholder-image.png"/>
+                            </image>
+                            <effect>
+                                <Glow/>
+                            </effect>
+                        </ImageView>
+                        <Region prefHeight="200.0" prefWidth="200.0"/>
+                        <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../../images/placeholder-image.png"/>
+                            </image>
+                            <effect>
+                                <BoxBlur/>
+                            </effect>
+                        </ImageView>
+                        <Region prefHeight="200.0" prefWidth="200.0"/>
+                        <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../../images/placeholder-image.png"/>
+                            </image>
+                            <effect>
+                                <SepiaTone/>
+                            </effect>
+                        </ImageView>
+                        <Region prefHeight="200.0" prefWidth="200.0"/>
+                        <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../../images/placeholder-image.png"/>
+                            </image>
+                            <effect>
+                                <Lighting>
+                                    <bumpInput>
+                                        <Shadow/>
+                                    </bumpInput>
+                                    <light>
+                                        <Light.Distant/>
+                                    </light>
+                                </Lighting>
+                            </effect>
+                        </ImageView>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+</BorderPane>
