@@ -5,13 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,8 +22,6 @@ import java.util.List;
 public class HelloController {
 
     private FilterImage filterImage;
-    @FXML
-    BorderPane bp;
     Stage stage;
     @FXML
     private FileChooser fc;
@@ -52,16 +48,25 @@ public class HelloController {
     protected void chooseFile(ActionEvent actionEvent) throws IOException {
         File file = fc.showOpenDialog(stage);
         if (file != null) {
-            liste.add(file.getName());
+            boolean unique = true;
+            for (String elmt : liste) {
+                if (elmt.equals(file.getName())) {
+                    Alert sameName = new Alert(Alert.AlertType.INFORMATION,"Un fichier enregistré à ce nom existe déjà !");
+                    sameName.setTitle("Doublon détecté");
+                    sameName.setHeaderText(null);
+                    sameName.show();
+                    unique = false;
+                }
+            }
+            if (unique) {
+                liste.add(file.getName());
+            }
             items.setItems(liste);
             Path source = Paths.get(file.getAbsolutePath());
             Path dest = Paths.get("src/main/resources/images/" + file.getName());
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
             Image image = new Image(dest.toFile().toURI().toURL().toString());
             imageView.setImage(image);
-            filterImage = new FilterImage(imageView.getImage());
-            Image imag1 = filterImage.firstFilter();
-            imageView.setImage(imag1);
 
             blueRedGreen.setImage(image);
             blackAndWhite.setImage(image);
