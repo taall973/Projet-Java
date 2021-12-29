@@ -19,34 +19,29 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traitementimages.HelloController">
+<BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="874.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traitementimages.HelloController">
     <left>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightblue;"
-              BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="text"/>
-                <ListView id="tags" prefHeight="200.0" prefWidth="200.0"/>
-                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0"/>
+                <TextField fx:id="text" />
+                <ListView id="tags" prefHeight="200.0" prefWidth="200.0" />
+                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0" />
             </children>
         </VBox>
     </left>
     <right>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: darkgreen;"
-              BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: darkgreen;" BorderPane.alignment="CENTER">
             <children>
-                <TextField/>
-                <ListView prefHeight="200.0" prefWidth="200.0"/>
-                <PasswordField/>
+                <TextField />
+                <ListView prefHeight="200.0" prefWidth="200.0" />
+                <PasswordField />
             </children>
         </VBox>
     </right>
     <center>
-        <ImageView fx:id="imageView" fitHeight="217.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true"
-                   BorderPane.alignment="CENTER">
+        <ImageView fx:id="imageView" fitHeight="217.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
             <image>
-                <Image url="@../../../images/placeholder-image.png"/>
+                <Image url="@../../../images/placeholder-image.png" />
             </image>
         </ImageView>
     </center>
@@ -57,56 +52,51 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile"
-                                          text="Ajouter une image"/>
+                                <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile" text="Ajouter une image" />
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: pink;">
                     <children>
-                        <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/placeholder-image.png"/>
+                                <Image url="@../../../images/placeholder-image.png" />
                             </image>
                             <effect>
-                                <Glow/>
+                                <Glow />
                             </effect>
                         </ImageView>
-                        <Region prefHeight="200.0" prefWidth="200.0"/>
-                        <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/placeholder-image.png"/>
+                                <Image url="@../../../images/placeholder-image.png" />
                             </image>
                             <effect>
-                                <BoxBlur/>
+                                <BoxBlur />
                             </effect>
                         </ImageView>
-                        <Region prefHeight="200.0" prefWidth="200.0"/>
-                        <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/placeholder-image.png"/>
+                                <Image url="@../../../images/placeholder-image.png" />
                             </image>
                             <effect>
-                                <SepiaTone/>
+                                <SepiaTone />
                             </effect>
                         </ImageView>
-                        <Region prefHeight="200.0" prefWidth="200.0"/>
-                        <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/placeholder-image.png"/>
+                                <Image url="@../../../images/placeholder-image.png" />
                             </image>
                             <effect>
                                 <Lighting>
                                     <bumpInput>
-                                        <Shadow/>
+                                        <Shadow />
                                     </bumpInput>
                                     <light>
-                                        <Light.Distant/>
+                                        <Light.Distant />
                                     </light>
                                 </Lighting>
                             </effect>
