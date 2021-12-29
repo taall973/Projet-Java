@@ -39,9 +39,6 @@ public class HelloController {
     protected void initialize() {
         loadImages();
         fc = new FileChooser();
-        filterImage = new FilterImage(imageView.getImage());
-        imageView.setImage(filterImage.firstFilter());
-
     }
 
     @FXML
@@ -66,12 +63,12 @@ public class HelloController {
             Path dest = Paths.get("src/main/resources/images/" + file.getName());
             Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
             Image image = new Image(dest.toFile().toURI().toURL().toString());
-            FilterImage filteredImage = new FilterImage(image);
+            filterImage = new FilterImage(image);
             imageView.setImage(image);
-            blueRedGreen.setImage(filteredImage.firstFilter());
-            blackAndWhite.setImage(image);
-            sepia.setImage(image);
-            prewitt.setImage(image);
+            blueRedGreen.setImage(filterImage.toBRG());
+            blackAndWhite.setImage(filterImage.toBlackAndWhite());
+            sepia.setImage(filterImage.toSepia());
+            prewitt.setImage(filterImage.toPrewitt());
         }
     }
 
@@ -82,10 +79,10 @@ public class HelloController {
         Image image = new Image(source.toFile().toURI().toString());
         filterImage = new FilterImage(image);
         imageView.setImage(image);
-        blueRedGreen.setImage(filterImage.firstFilter());
-        blackAndWhite.setImage(image);
-        sepia.setImage(image);
-        prewitt.setImage(image);
+        blueRedGreen.setImage(filterImage.toBRG());
+        blackAndWhite.setImage(filterImage.toBlackAndWhite());
+        sepia.setImage(filterImage.toSepia());
+        prewitt.setImage(filterImage.toPrewitt());
     }
 
     public void setStage(Stage stage) {

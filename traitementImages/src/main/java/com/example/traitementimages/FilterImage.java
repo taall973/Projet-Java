@@ -10,48 +10,110 @@ import java.io.File;
 
 public class FilterImage {
     private Image image;
-    private PixelReader pixelReader;
-    private PixelWriter pixelWriter;
-    private int width, height;
-    private WritableImage writableImage;
 
 
     public FilterImage(Image image) {
         this.image = image;
-        this.pixelReader = image.getPixelReader();
-        this.height = (int) image.getHeight();
-        this.width = (int) image.getWidth();
-        this.writableImage = new WritableImage(this.pixelReader, this.width, this.height);
-        pixelWriter = writableImage.getPixelWriter();
     }
 
-    public Image firstFilter() {
-        int pix = 0;
-        File file = new File("./test.jpg");
+    public Image toBRG() {
+        PixelReader pixelReader = image.getPixelReader();
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+        WritableImage writableImage = new WritableImage(pixelReader, width, height);
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
 
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 int pixel = pixelReader.getArgb(i, j);
+                int opacity = ((pixel >> 24) & 0xff);
+                int red = ((pixel >> 16) & 0xff);
+                int green = ((pixel >> 8) & 0xff);
+                int blue = ((pixel & 0xff));
+
+                int brg = ((opacity << 24) + (blue << 16) + (red << 8) + green);
+                pixelWriter.setArgb(i, j, brg);
+            }
+        }
+        return writableImage;
+    }
+
+    public Image toBlackAndWhite() {
+        PixelReader pixelReader = image.getPixelReader();
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+        WritableImage writableImage = new WritableImage(pixelReader, width, height);
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pixel = pixelReader.getArgb(i, j);
+                int opacity = ((pixel >> 24) & 0xff);
+                int red = ((pixel >> 16) & 0xff);
+                int green = ((pixel >> 8) & 0xff);
+                int blue = ((pixel & 0xff));
+
+                int sum = ((opacity << 24) + (((red + green + blue) / 3) << 16) + (((red + green + blue) / 3) << 8) + ((red + green + blue) / 3));
+                pixelWriter.setArgb(i, j, sum);
+            }
+        }
+        return writableImage;
+    }
+
+    public Image toSepia() {
+        PixelReader pixelReader = image.getPixelReader();
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+        WritableImage writableImage = new WritableImage(pixelReader, width, height);
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pixel = pixelReader.getArgb(i, j);
+                int opacity = ((pixel >> 24) & 0xff);
+                int red = ((pixel >> 16) & 0xff);
+                int green = ((pixel >> 8) & 0xff);
+                int blue = ((pixel & 0xff));
+
+                int redSepia = (int) ((red * .393) + (green * .769) + (blue * .189));
+                if (redSepia > 255) {
+                    redSepia = 255;
+                }
+                int greenSepia = (int) ((red * .349) + (green * .686) + (blue * .168));
+                if (greenSepia > 255) {
+                    greenSepia = 255;
+                }
+                int blueSepia = (int) ((red * .272) + (green * .534) + (blue * .131));
+                if (blueSepia > 255) {
+                    blueSepia = 255;
+                }
+                int sepia = (opacity << 24) + (redSepia << 16) + (greenSepia << 8) + blueSepia;
+                pixelWriter.setArgb(i, j, sepia);
+            }
+        }
+        return writableImage;
+    }
+
+    public Image toPrewitt() {
+        PixelReader pixelReader = image.getPixelReader();
+        int height = (int) image.getHeight();
+        int width = (int) image.getWidth();
+        WritableImage writableImage = new WritableImage(pixelReader, width, height);
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int pixel = pixelReader.getArgb(i, j);
+                int opacity = ((pixel >> 24) & 0xff);
+                int red = ((pixel >> 16) & 0xff);
+                int green = ((pixel >> 8) & 0xff);
+                int blue = ((pixel & 0xff));
+
 
                 pixelWriter.setArgb(i, j, pixel >> 1);
             }
         }
-    /*
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                Color pixel = pixelReader.getColor(i, j);
-                int b = Color.BLUE ;
-                new Color(R,G,B);
-                color.getR
-                                  R     V           B
-                    new COLOR (0>255 , 0>255 ,  , 0>255 )
-                    (150 , 20,255)
-                    150+20+255/3 = 120
-                     pixel (i ; j ) (120 ,120 ,120)
-                pixelWriter.setColor(i, j, Color.GREEN);
-            }
-        }
-*/
-        return this.writableImage;
+        return writableImage;
     }
+
 }
