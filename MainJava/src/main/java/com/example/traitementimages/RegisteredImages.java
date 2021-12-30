@@ -9,7 +9,7 @@ public class RegisteredImages extends FilterImage { //implements quand on aura t
     public RegisteredImages(Image image){
         super(image);
     }
-    public void AjouterTags(String t){
+    //public void AjouterTags(String t){
         tags.add(t);
     }
 }

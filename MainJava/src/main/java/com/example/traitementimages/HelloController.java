@@ -40,7 +40,7 @@ public class HelloController {
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
     @FXML
-    private Button vInv, button;
+    private Button vInv;
 
     @FXML
     protected void initialize() {
@@ -50,8 +50,21 @@ public class HelloController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
-                    tagList.add(searchTag.getText());
-                    itemsTag.setItems(tagList);
+                    if (!(tagList.contains(searchTag.getText()))) {
+                        tagList.add(searchTag.getText());
+                        itemsTag.setItems(tagList);
+                    }
+                }
+            }
+        });
+        addTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    if (!(tagList.contains(addTag.getText()))) {
+                        tagList.add(addTag.getText());
+                        itemsTag.setItems(tagList);
+                    }
                 }
             }
         });
@@ -61,17 +74,14 @@ public class HelloController {
     protected void chooseFile(ActionEvent actionEvent) throws IOException {
         File file = fc.showOpenDialog(stage);
         if (file != null) {
-            boolean unique = true;
-            for (String elmt : liste) {
-                if (elmt.equals(file.getName())) {
-                    Alert sameName = new Alert(Alert.AlertType.INFORMATION, "Un fichier enregistré à ce nom existe déjà !");
-                    sameName.setTitle("Doublon détecté");
-                    sameName.setHeaderText(null);
-                    sameName.show();
-                    unique = false;
-                }
-            }
-            if (unique) {
+            if (liste.contains(file.getName())) {
+                Alert sameName = new Alert(Alert.AlertType.INFORMATION, "Un fichier enregistré à ce nom existe déjà !");
+                sameName.setTitle("Doublon détecté");
+                sameName.setHeaderText(null);
+                sameName.show();
+                items.getSelectionModel().select(file.getName());
+                showImage();
+            } else {
                 liste.add(file.getName());
                 items.setItems(liste);
                 Path source = Paths.get(file.getAbsolutePath());
@@ -84,9 +94,6 @@ public class HelloController {
                 blackAndWhite.setImage(filterImage.toBlackAndWhite());
                 sepia.setImage(filterImage.toSepia());
                 prewitt.setImage(filterImage.toPrewitt());
-            } else {
-                items.getSelectionModel().select(file.getName());
-                showImage();
             }
         }
     }
@@ -156,10 +163,10 @@ public class HelloController {
         items.setItems(liste);
     }
 
-    /*public void ajouterTag() {
+    public void handle() {
         button.setOnAction(e -> {
             String tag =
         });
-    }*/
+    }
 
 }
