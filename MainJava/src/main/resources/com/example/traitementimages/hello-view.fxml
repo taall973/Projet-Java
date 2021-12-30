@@ -50,7 +50,7 @@
                 <Region prefHeight="200.0" prefWidth="200.0" />
                 <Button mnemonicParsing="false" text="Rotation droite" />
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <Button mnemonicParsing="false" text="Inversion verticale" />
+                <Button fx:id="vInv" onAction="#verticalInvert" mnemonicParsing="false" text="Inversion verticale" />
                 <Region prefHeight="200.0" prefWidth="200.0" />
                 <Button mnemonicParsing="false" text="Inversion horizontale" />
             <Region prefHeight="200.0" prefWidth="200.0" />

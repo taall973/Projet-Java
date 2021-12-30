@@ -4,6 +4,9 @@ import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class FilterImage {
     private Image image;
@@ -31,8 +34,22 @@ public class FilterImage {
         this.blue = (p & 0xff);
     }
 
-    public Image getImage(){
+    public Image getImage() {
         return this.image;
+    }
+
+    public Image bottomToTop() {
+        pixelReader = image.getPixelReader();
+        pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
+        writableImage = new WritableImage(pixelReader, width, height);
+        pixelWriter = writableImage.getPixelWriter();
+        outputPixels = new int[width * height * 4];
+        int j = 0;
+        for (int i = inputPixels.length - 1; i > 0; i--) {
+            outputPixels[j++] = inputPixels[i];
+        }
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
+        return writableImage;
     }
 
     public Image toBRG() {

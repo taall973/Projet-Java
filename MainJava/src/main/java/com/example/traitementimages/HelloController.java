@@ -34,6 +34,8 @@ public class HelloController {
     private TextField text;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
+    @FXML
+    private Button vInv;
 
     @FXML
     protected void initialize() {
@@ -84,6 +86,13 @@ public class HelloController {
         blackAndWhite.setImage(filterImage.toBlackAndWhite());
         sepia.setImage(filterImage.toSepia());
         prewitt.setImage(filterImage.toPrewitt());
+    }
+
+    @FXML
+    public void verticalInvert() {
+        Image image = getCurrentImage();
+        filterImage = new FilterImage(image);
+        imageView.setImage(filterImage.bottomToTop());
     }
 
     @FXML
