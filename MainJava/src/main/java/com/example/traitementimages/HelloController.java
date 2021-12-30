@@ -188,6 +188,7 @@ public class HelloController {
             }
         }*/
         for (int i = 0; i < images.size(); i++) {
+
             if (!(images.get(i).getTags().stream().allMatch(tagList::contains))) {
                 liste.remove(images.get(i).getName());
                 images.remove(i);
