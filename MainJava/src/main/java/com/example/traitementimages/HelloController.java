@@ -52,6 +52,7 @@ public class HelloController {
                     if (!(tagList.contains(searchTag.getText()))) {
                         tagList.add(searchTag.getText());
                         itemsTag.setItems(tagList);
+                        imagesWithTags();
                     }
                 }
             }
@@ -61,8 +62,7 @@ public class HelloController {
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
                     if (!(imageTagList.contains(addTag.getText()))) {
-                        images.get(0);
-                        //images.get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
+                        images.get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
                         imageTagList.add(addTag.getText());
                         imageTags.setItems(imageTagList);
                     }
@@ -102,6 +102,7 @@ public class HelloController {
 
     @FXML
     public void showImage() {
+        addTag.setText(null);
         rotation(0);
         getCurrentImage();
         imageView.setImage(filterImage.getImage());
@@ -150,12 +151,13 @@ public class HelloController {
     }
 
     public void getCurrentImage() {
+        imageTags.getItems().clear();
         String file = items.getSelectionModel().getSelectedItem();
-        RegisteredImages currentImage;
         for (RegisteredImages image : images) {
             if (image.getName().equals(file)) {
                 filterImage = image;
-                imageTagList = (ObservableList<String>) filterImage.getTags();
+                imageTagList.removeAll();
+                imageTagList.addAll(filterImage.getTags());
                 imageTags.setItems(imageTagList);
                 break;
             }
@@ -176,14 +178,22 @@ public class HelloController {
         items.setItems(liste);
     }
 
-    public ArrayList<RegisteredImages> imagesWithTags() {
-        ArrayList<RegisteredImages> taggedImages = new ArrayList<>();
-        for (RegisteredImages image : images) {
-            if (image.getTags().containsAll(tagList)) {
-                taggedImages.add(image);
+    public void imagesWithTags() {
+        items.getItems().clear();
+        System.out.println(images.size());
+        /*for (RegisteredImages image : images) {
+            if (!(image.getTags().containsAll(tagList))) {
+                images.remove(image);
+                liste.remove(image.getName());
+            }
+        }*/
+        for (int i = 0; i < images.size(); i++) {
+            if (!(images.get(i).getTags().stream().allMatch(tagList::contains))) {
+                liste.remove(images.get(i).getName());
+                images.remove(i);
             }
         }
-        return taggedImages;
+        items.setItems(liste);
     }
 
     public void rotation(int x) {

@@ -11,10 +11,11 @@ public class RegisteredImages extends FilterImage { //implements quand on aura t
 
     public RegisteredImages(Image image) {
         super(image);
+        tags = new ArrayList<>();
     }
 
     public RegisteredImages(Image image, File name) {
-        super(image);
+        this(image);
         this.name = name;
     }
 
