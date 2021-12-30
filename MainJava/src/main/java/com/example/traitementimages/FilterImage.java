@@ -48,7 +48,7 @@ public class FilterImage {
         for (int i = inputPixels.length - 1; i > 0; i--) {
             outputPixels[j++] = inputPixels[i];
         }*/
-        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, height * width * 4);
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, height * width * 4 - 1, width * 4);
         return writableImage;
     }
 
