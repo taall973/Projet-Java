@@ -97,7 +97,8 @@ public class FilterImage {
         return writableImage;
     }
 
-    public Image toPrewitt() {
+    /*
+    *     public Image toPrewitt() {
         Image blackAndWhite = toBlackAndWhite();
         PixelReader pixelReader = blackAndWhite.getPixelReader();
         int height = (int) blackAndWhite.getHeight();
@@ -194,6 +195,48 @@ public class FilterImage {
                 pixelWriter.setArgb(i, j, prewitt);
             }
         }
+        return writableImage;
+    }*/
+
+    public int getPixelIntensity(int i) {
+        try {
+            return inputPixels[i] & 0xff;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public Image toPrewitt() {
+        pixelReader = image.getPixelReader();
+        pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
+        writableImage = new WritableImage(pixelReader, width, height);
+        pixelWriter = writableImage.getPixelWriter();
+        outputPixels = new int[width * height * 4];
+        int i = 0;
+        int prewitt, gX, gY, g;
+        int[][] intensity = new int[3][3];
+        for (int pixel : inputPixels) {
+            intensity[0][0] = getPixelIntensity(i - 1 - (width * 4));
+            intensity[0][1] = getPixelIntensity(i - (width * 4));
+            intensity[0][2] = getPixelIntensity(i + 1 - (width * 4));
+            intensity[1][0] = getPixelIntensity(i - 1);
+            intensity[1][1] = getPixelIntensity(i);
+            intensity[1][2] = getPixelIntensity(i + 1);
+            intensity[2][0] = getPixelIntensity(i - 1 + (width * 4));
+            intensity[2][1] = getPixelIntensity(i + (width * 4));
+            intensity[2][2] = getPixelIntensity(i + 1 + (width * 4));
+
+            gX = intensity[0][0] + intensity[1][0] + intensity[2][0] - intensity[0][2] - intensity[1][2] - intensity[2][2];
+            gY = intensity[0][0] + intensity[0][1] + intensity[0][2] - intensity[2][0] - intensity[2][1] - intensity[2][2];
+            g = (int) Math.sqrt(Math.pow(gX, 2) + Math.pow(gY, 2));
+            if (g > 255) {
+                g = 255;
+            }
+            prewitt = (255 << 24) + (g << 16) + (g << 8) + g;
+
+            outputPixels[i++] = prewitt;
+        }
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
     }
 }
