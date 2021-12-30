@@ -57,18 +57,21 @@ public class HelloController {
             }
             if (unique) {
                 liste.add(file.getName());
+                items.setItems(liste);
+                Path source = Paths.get(file.getAbsolutePath());
+                Path dest = Paths.get("src/main/resources/images/" + file.getName());
+                Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
+                Image image = new Image(dest.toFile().toURI().toURL().toString());
+                filterImage = new FilterImage(image);
+                imageView.setImage(filterImage.getImage());
+                blueRedGreen.setImage(filterImage.toBRG());
+                blackAndWhite.setImage(filterImage.toBlackAndWhite());
+                sepia.setImage(filterImage.toSepia());
+                prewitt.setImage(filterImage.toPrewitt());
+            } else {
+                items.getSelectionModel().select(file.getName());
+                showImage();
             }
-            items.setItems(liste);
-            Path source = Paths.get(file.getAbsolutePath());
-            Path dest = Paths.get("src/main/resources/images/" + file.getName());
-            Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-            Image image = new Image(dest.toFile().toURI().toURL().toString());
-            filterImage = new FilterImage(image);
-            imageView.setImage(image);
-            blueRedGreen.setImage(filterImage.toBRG());
-            blackAndWhite.setImage(filterImage.toBlackAndWhite());
-            sepia.setImage(filterImage.toSepia());
-            prewitt.setImage(filterImage.toPrewitt());
         }
     }
 

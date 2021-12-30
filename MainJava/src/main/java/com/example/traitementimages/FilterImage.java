@@ -31,6 +31,10 @@ public class FilterImage {
         this.blue = (p & 0xff);
     }
 
+    public Image getImage(){
+        return this.image;
+    }
+
     public Image toBRG() {
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
