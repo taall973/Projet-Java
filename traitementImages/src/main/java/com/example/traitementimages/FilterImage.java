@@ -105,76 +105,90 @@ public class FilterImage {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 int intensity[][] = new int[3][3]; //ce tableau contient les valeurs des pixels de l'image nécessaires à la convolution
-                intensity[1][1] = pixelReader.getArgb(i, j) & 0xff; //cette variable n'est jamais nulle donc en dehors du if
+                intensity[1][1] = pixelReader.getArgb(i, j) & 0xff;
                 if (i == 0) {
+                    intensity[0][0] = 0;
+                    intensity[0][1] = 0;
+                    intensity[0][2] = 0;
+                    intensity[2][1] = pixelReader.getArgb(i + 1, j) & 0xff;
                     if (j == 0) {
-                        intensity[0][0] = 0;
-                        intensity[0][1] = 0;
-                        intensity[0][2] = 0;
                         intensity[1][0] = 0;
-                        intensity[1][2] = pixelReader.getArgb(i, j + 1);
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
                         intensity[2][0] = 0;
-                        intensity[2][1] = pixelReader.getArgb(i + 1, j);
-                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1);
+                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1) & 0xff;
                     } else if (j == height - 1) {
-                        intensity[0][0] = 0;
-                        intensity[0][1] = 0;
-                        intensity[0][2] = 0;
-                        intensity[1][0] = pixelReader.getArgb(i, j - 1);
-                        intensity[1][1] = pixelReader.getArgb(i, j);
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
                         intensity[1][2] = 0;
-                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1);
-                        intensity[2][1] = pixelReader.getArgb(i + 1, j);
+                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1) & 0xff;
                         intensity[2][2] = 0;
                     } else {
-                        intensity[0][0] = 0;
-                        intensity[0][1] = 0;
-                        intensity[0][2] = 0;
-                        intensity[1][0] = pixelReader.getArgb(i, j - 1);
-                        intensity[1][1] = pixelReader.getArgb(i, j);
-                        intensity[1][2] = pixelReader.getArgb(i, j + 1);
-                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1);
-                        intensity[2][1] = pixelReader.getArgb(i + 1, j);
-                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1);
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
+                        intensity[1][1] = pixelReader.getArgb(i, j) & 0xff;
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
+                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1) & 0xff;
+                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1) & 0xff;
                     }
                 } else if (i == width - 1) {
+                    intensity[2][0] = 0;
+                    intensity[2][1] = 0;
+                    intensity[2][2] = 0;
+                    intensity[0][1] = pixelReader.getArgb(i - 1, j) & 0xff;
                     if (j == 0) {
                         intensity[0][0] = 0;
-                        intensity[0][1] = pixelReader.getArgb(i - 1, j);
-                        intensity[0][2] = pixelReader.getArgb(i - 1, j + 1);
+                        intensity[0][2] = pixelReader.getArgb(i - 1, j + 1) & 0xff;
                         intensity[1][0] = 0;
-                        intensity[1][1] = pixelReader.getArgb(i, j);
-                        intensity[1][2] = pixelReader.getArgb(i, j + 1);
-                        intensity[2][0] = 0;
-                        intensity[2][1] = 0;
-                        intensity[2][2] = 0;
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
                     } else if (j == height - 1) {
-                        intensity[0][0] = pixelReader.getArgb(i - 1, i - 1);
-                        intensity[0][1] = pixelReader.getArgb(i - 1, j);
+                        intensity[0][0] = pixelReader.getArgb(i - 1, j - 1) & 0xff;
                         intensity[0][2] = 0;
-                        intensity[1][0] = pixelReader.getArgb(i, j - 1);
-                        intensity[1][1] = pixelReader.getArgb(i, j);
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
                         intensity[1][2] = 0;
-                        intensity[2][0] = 0;
-                        intensity[2][1] = 0;
-                        intensity[2][2] = 0;
                     } else {
-
+                        intensity[0][0] = pixelReader.getArgb(i - 1, j - 1) & 0xff;
+                        intensity[0][2] = pixelReader.getArgb(i - 1, j + 1) & 0xff;
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
                     }
                 } else {
+                    intensity[0][1] = pixelReader.getArgb(i - 1, j) & 0xff;
+                    intensity[2][1] = pixelReader.getArgb(i + 1, j) & 0xff;
                     if (j == 0) {
-
+                        intensity[0][0] = 0;
+                        intensity[0][2] = pixelReader.getArgb(i - 1, j + 1) & 0xff;
+                        intensity[1][0] = 0;
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
+                        intensity[2][0] = 0;
+                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1) & 0xff;
                     } else if (j == height - 1) {
-
+                        intensity[0][0] = pixelReader.getArgb(i - 1, j - 1) & 0xff;
+                        intensity[0][2] = 0;
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
+                        intensity[1][2] = 0;
+                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1) & 0xff;
+                        intensity[2][2] = 0;
                     } else {
-
+                        intensity[0][0] = pixelReader.getArgb(i - 1, j - 1) & 0xff;
+                        intensity[0][2] = pixelReader.getArgb(i - 1, j + 1) & 0xff;
+                        intensity[1][0] = pixelReader.getArgb(i, j - 1) & 0xff;
+                        intensity[1][2] = pixelReader.getArgb(i, j + 1) & 0xff;
+                        intensity[2][0] = pixelReader.getArgb(i + 1, j - 1) & 0xff;
+                        intensity[2][2] = pixelReader.getArgb(i + 1, j + 1) & 0xff;
                     }
                 }
-                int opacity = ((pixelReader.getArgb(i, j) >> 24) & 0xff);
+                int opacity = ((intensity[1][1] >> 24) & 0xff);
 
-                int gX = intensity *
-
-                        pixelWriter.setArgb(i, j, pixel >> 1);
+                int gX = intensity[0][0] * 1 + intensity[0][1] * 0 + intensity[0][2] * -1 +
+                        intensity[1][0] * 1 + intensity[1][1] * 0 + intensity[1][2] * -1 +
+                        intensity[2][0] * 1 + intensity[2][1] * 0 + intensity[2][2] * -1;
+                int gY = intensity[0][0] * 1 + intensity[0][1] * 1 + intensity[0][2] * 1 +
+                        intensity[1][0] * 0 + intensity[1][1] * 0 + intensity[1][2] * 0 +
+                        intensity[2][0] * -1 + intensity[2][1] * -1 + intensity[2][2] * -1;
+                int g = (int) Math.sqrt(Math.pow(gX, 2) + Math.pow(gY, 2));
+                if (g > 255) {
+                    g = 255;
+                }
+                int prewitt = (255 << 24) + (g << 16) + (g << 8) + g;
+                pixelWriter.setArgb(i, j, prewitt);
             }
         }
         return writableImage;

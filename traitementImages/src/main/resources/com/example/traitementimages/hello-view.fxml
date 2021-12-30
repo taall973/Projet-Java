@@ -68,25 +68,25 @@
         </MenuBar>
         <HBox fx:id="filters" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
             <children>
-                <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#blueRedGreenFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#blackAndWhiteFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#sepiaFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#prewittFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../images/placeholder-image.png" />
                     </image>

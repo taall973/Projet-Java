@@ -85,6 +85,41 @@ public class HelloController {
         prewitt.setImage(filterImage.toPrewitt());
     }
 
+    @FXML
+    public void blueRedGreenFilter() {
+        Image currentImage = getCurrentImage();
+        filterImage = new FilterImage(currentImage);
+        imageView.setImage(filterImage.toBRG());
+    }
+
+    @FXML
+    public void blackAndWhiteFilter() {
+        Image currentImage = getCurrentImage();
+        filterImage = new FilterImage(currentImage);
+        imageView.setImage(filterImage.toBlackAndWhite());
+    }
+
+    @FXML
+    public void sepiaFilter() {
+        Image currentImage = getCurrentImage();
+        filterImage = new FilterImage(currentImage);
+        imageView.setImage(filterImage.toSepia());
+    }
+
+    @FXML
+    public void prewittFilter() {
+        Image currentImage = getCurrentImage();
+        filterImage = new FilterImage(currentImage);
+        imageView.setImage(filterImage.toPrewitt());
+    }
+
+    public Image getCurrentImage() {
+        String file = items.getSelectionModel().getSelectedItem();
+        Path source = Paths.get("src/main/resources/images/" + file);
+        Image image = new Image(source.toFile().toURI().toString());
+        return image;
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
