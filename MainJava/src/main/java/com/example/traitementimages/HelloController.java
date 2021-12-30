@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -21,26 +23,38 @@ import java.util.List;
 
 public class HelloController {
 
-    private FilterImage filterImage;
+    private RegisteredImages filterImage;
     Stage stage;
     @FXML
     private FileChooser fc;
     @FXML
     private MenuItem pickImage;
     private ObservableList<String> liste = FXCollections.observableArrayList();
+    private ObservableList<String> tagList = FXCollections.observableArrayList();
     @FXML
     private ListView<String> items;
     @FXML
-    private TextField text;
+    private ListView<String> itemsTag;
+    @FXML
+    private TextField searchTag, addTag;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
     @FXML
-    private Button vInv;
+    private Button vInv, button;
 
     @FXML
     protected void initialize() {
         loadImages();
         fc = new FileChooser();
+        searchTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    tagList.add(searchTag.getText());
+                    itemsTag.setItems(tagList);
+                }
+            }
+        });
     }
 
     @FXML
@@ -64,7 +78,7 @@ public class HelloController {
                 Path dest = Paths.get("src/main/resources/images/" + file.getName());
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
                 Image image = new Image(dest.toFile().toURI().toURL().toString());
-                filterImage = new FilterImage(image);
+                filterImage = new RegisteredImages(image);
                 imageView.setImage(filterImage.getImage());
                 blueRedGreen.setImage(filterImage.toBRG());
                 blackAndWhite.setImage(filterImage.toBlackAndWhite());
@@ -80,7 +94,7 @@ public class HelloController {
     @FXML
     public void showImage() {
         Image image = getCurrentImage();
-        filterImage = new FilterImage(image);
+        filterImage = new RegisteredImages(image);
         imageView.setImage(image);
         blueRedGreen.setImage(filterImage.toBRG());
         blackAndWhite.setImage(filterImage.toBlackAndWhite());
@@ -91,35 +105,35 @@ public class HelloController {
     @FXML
     public void verticalInvert() {
         Image image = getCurrentImage();
-        filterImage = new FilterImage(image);
+        filterImage = new RegisteredImages(image);
         imageView.setImage(filterImage.bottomToTop());
     }
 
     @FXML
     public void blueRedGreenFilter() {
         Image currentImage = getCurrentImage();
-        filterImage = new FilterImage(currentImage);
+        filterImage = new RegisteredImages(currentImage);
         imageView.setImage(filterImage.toBRG());
     }
 
     @FXML
     public void blackAndWhiteFilter() {
         Image currentImage = getCurrentImage();
-        filterImage = new FilterImage(currentImage);
+        filterImage = new RegisteredImages(currentImage);
         imageView.setImage(filterImage.toBlackAndWhite());
     }
 
     @FXML
     public void sepiaFilter() {
         Image currentImage = getCurrentImage();
-        filterImage = new FilterImage(currentImage);
+        filterImage = new RegisteredImages(currentImage);
         imageView.setImage(filterImage.toSepia());
     }
 
     @FXML
     public void prewittFilter() {
         Image currentImage = getCurrentImage();
-        filterImage = new FilterImage(currentImage);
+        filterImage = new RegisteredImages(currentImage);
         imageView.setImage(filterImage.toPrewitt());
     }
 
@@ -141,5 +155,11 @@ public class HelloController {
         }
         items.setItems(liste);
     }
+
+    /*public void ajouterTag() {
+        button.setOnAction(e -> {
+            String tag =
+        });
+    }*/
 
 }
