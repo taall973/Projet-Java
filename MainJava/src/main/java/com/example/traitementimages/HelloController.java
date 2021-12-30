@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class HelloController {
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
     @FXML
     private Button vInv;
+    private ArrayList<RegisteredImages> images;
 
     @FXML
     protected void initialize() {
@@ -163,10 +165,14 @@ public class HelloController {
         items.setItems(liste);
     }
 
-    public void handle() {
-        button.setOnAction(e -> {
-            String tag =
-        });
+    public ArrayList<RegisteredImages> imagesWithTags() {
+        ArrayList<RegisteredImages> taggedImages = new ArrayList<>();
+        for (RegisteredImages image : images) {
+            if (image.getTags().containsAll(tagList)) {
+                taggedImages.add(image);
+            }
+        }
+        return taggedImages;
     }
 
 }
