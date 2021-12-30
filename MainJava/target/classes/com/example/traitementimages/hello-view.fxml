@@ -53,7 +53,7 @@
                 <Region prefHeight="200.0" prefWidth="200.0" />
                 <Button fx:id="vInv" mnemonicParsing="false" onAction="#verticalInvert" text="Inversion verticale" />
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <Button mnemonicParsing="false" text="Inversion horizontale" />
+                <Button fx:id="hInv" mnemonicParsing="false" onAction="#horizontalInvert" text="Inversion horizontale" />
                 <Region prefHeight="200.0" prefWidth="200.0" />
                 <Button mnemonicParsing="false" text="Enregistrer" />
             </children>
@@ -107,9 +107,9 @@
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
                         <TextField fx:id="addTag" />
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                        <ListView fx:id="imageTags" prefHeight="200.0" prefWidth="200.0" />
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-                        <PasswordField />
+                        <PasswordField fx:id="password" />
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
                     </children>
                     <HBox.margin>

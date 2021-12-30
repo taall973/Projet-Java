@@ -2,7 +2,6 @@ package com.example.traitementimages;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,8 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,23 +16,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class HelloController {
 
     private RegisteredImages filterImage;
     Stage stage;
+    private int rotate; //variable qui contient la valeur de la rotation de l'image affichée
     @FXML
     private FileChooser fc;
     @FXML
     private MenuItem pickImage;
     private ObservableList<String> liste = FXCollections.observableArrayList();
     private ObservableList<String> tagList = FXCollections.observableArrayList();
+    private ObservableList<String> imageTagList = FXCollections.observableArrayList();
     @FXML
-    private ListView<String> items;
-    @FXML
-    private ListView<String> itemsTag;
+    private ListView<String> items, itemsTag, imageTags;
     @FXML
     private TextField searchTag, addTag;
     @FXML
@@ -46,6 +41,8 @@ public class HelloController {
 
     @FXML
     protected void initialize() {
+        images = new ArrayList<>();
+        rotation(0);
         loadImages();
         fc = new FileChooser();
         searchTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -63,9 +60,11 @@ public class HelloController {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
-                    if (!(tagList.contains(addTag.getText()))) {
-                        tagList.add(addTag.getText());
-                        itemsTag.setItems(tagList);
+                    if (!(imageTagList.contains(addTag.getText()))) {
+                        images.get(0);
+                        //images.get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
+                        imageTagList.add(addTag.getText());
+                        imageTags.setItems(imageTagList);
                     }
                 }
             }
@@ -73,7 +72,7 @@ public class HelloController {
     }
 
     @FXML
-    protected void chooseFile(ActionEvent actionEvent) throws IOException {
+    protected void chooseFile() throws IOException {
         File file = fc.showOpenDialog(stage);
         if (file != null) {
             if (liste.contains(file.getName())) {
@@ -84,6 +83,7 @@ public class HelloController {
                 items.getSelectionModel().select(file.getName());
                 showImage();
             } else {
+                rotation(0);
                 liste.add(file.getName());
                 items.setItems(liste);
                 Path source = Paths.get(file.getAbsolutePath());
@@ -102,9 +102,9 @@ public class HelloController {
 
     @FXML
     public void showImage() {
-        Image image = getCurrentImage();
-        filterImage = new RegisteredImages(image);
-        imageView.setImage(image);
+        rotation(0);
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
         blueRedGreen.setImage(filterImage.toBRG());
         blackAndWhite.setImage(filterImage.toBlackAndWhite());
         sepia.setImage(filterImage.toSepia());
@@ -113,44 +113,53 @@ public class HelloController {
 
     @FXML
     public void verticalInvert() {
-        Image image = getCurrentImage();
-        filterImage = new RegisteredImages(image);
-        imageView.setImage(filterImage.bottomToTop());
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate + 180);
+    }
+
+    @FXML
+    public void horizontalInvert() {
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        imageView.setRotate(0);
     }
 
     @FXML
     public void blueRedGreenFilter() {
-        Image currentImage = getCurrentImage();
-        filterImage = new RegisteredImages(currentImage);
+        getCurrentImage();
         imageView.setImage(filterImage.toBRG());
     }
 
     @FXML
     public void blackAndWhiteFilter() {
-        Image currentImage = getCurrentImage();
-        filterImage = new RegisteredImages(currentImage);
+        getCurrentImage();
         imageView.setImage(filterImage.toBlackAndWhite());
     }
 
     @FXML
     public void sepiaFilter() {
-        Image currentImage = getCurrentImage();
-        filterImage = new RegisteredImages(currentImage);
+        getCurrentImage();
         imageView.setImage(filterImage.toSepia());
     }
 
     @FXML
     public void prewittFilter() {
-        Image currentImage = getCurrentImage();
-        filterImage = new RegisteredImages(currentImage);
+        getCurrentImage();
         imageView.setImage(filterImage.toPrewitt());
     }
 
-    public Image getCurrentImage() {
+    public void getCurrentImage() {
         String file = items.getSelectionModel().getSelectedItem();
-        Path source = Paths.get("src/main/resources/images/" + file);
-        Image image = new Image(source.toFile().toURI().toString());
-        return image;
+        RegisteredImages currentImage;
+        for (RegisteredImages image : images) {
+            if (image.getName().equals(file)) {
+                filterImage = image;
+                imageTagList = (ObservableList<String>) filterImage.getTags();
+                imageTags.setItems(imageTagList);
+                break;
+            }
+        }
     }
 
     public void setStage(Stage stage) {
@@ -160,7 +169,9 @@ public class HelloController {
     public void loadImages() {
         File directory = Paths.get("src/main/resources/images/").toFile();
         for (File file : directory.listFiles()) {
-            liste.add(file.getName());
+            RegisteredImages img = new RegisteredImages(new Image(file.toURI().toString()), file);
+            images.add(img);
+            liste.add(img.getName());
         }
         items.setItems(liste);
     }
@@ -173,6 +184,11 @@ public class HelloController {
             }
         }
         return taggedImages;
+    }
+
+    public void rotation(int x) {
+        rotate = x;
+        imageView.setRotate(rotate);
     }
 
 }
