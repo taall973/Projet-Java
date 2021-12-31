@@ -98,7 +98,7 @@ public class HelloController {
                 Path dest = Paths.get("src/main/resources/images/" + file.getName());
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
                 Image image = new Image(dest.toFile().toURI().toURL().toString());
-                filterImage = new RegisteredImages(image);
+                filterImage = new RegisteredImages(image, file);
                 imageView.setImage(filterImage.getImage());
                 blueRedGreen.setImage(filterImage.toBRG());
                 blackAndWhite.setImage(filterImage.toBlackAndWhite());
