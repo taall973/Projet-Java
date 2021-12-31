@@ -57,6 +57,7 @@ public class HelloController {
                         tagList.add(searchTag.getText());
                         itemsTag.setItems(tagList);
                         imagesWithTags();
+                        searchTag.setText(null);
                     }
                 }
             }
@@ -69,6 +70,7 @@ public class HelloController {
                         images.get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
                         imageTagList.add(addTag.getText());
                         imageTags.setItems(imageTagList);
+                        addTag.setText(null);
                     }
                 }
             }
@@ -183,35 +185,17 @@ public class HelloController {
     }
 
     public void imagesWithTags() {
-        /*System.out.println(liste.size());
-        System.out.println(liste.size());
-        boolean match = true;
-        for (int i = 0; i < images.size(); i++) {
-            for (int j = 0; j < tagList.size(); j++) {
-                if (!images.get(i).getTags().contains(tagList.get(j))) {
-                    match = false;
-                }
-                if (!match) {
-                    System.out.println(i + " - " + images.size() + " - " + liste.size());
-                    liste.remove(i);
-                    images.remove(i);
-                }
-            }
-        }*/
-        for (RegisteredImages image : images){
-            if (tagList.stream().allMatch(image.getTags()::contains)){
+        ArrayList<RegisteredImages> matchingImages = new ArrayList<>();
+        ObservableList<String> matchingList = FXCollections.observableArrayList();
 
+        for (RegisteredImages image : images) {
+            if (tagList.stream().allMatch(image.getTags()::contains)) {
+                matchingImages.add(image);
+                matchingList.add(image.getName());
             }
         }
-        ListIterator<RegisteredImages> iterator = images.listIterator();
-        for (int i = 0; i < images.size(); i++) {
-            System.out.println(i + " - " + images.size());
-            System.out.println(images.get(i).getName() + " - " + tagList.stream().allMatch(images.get(i).getTags()::contains));
-            if (!()) {
-                liste.remove(i);
-                images.remove(i);
-            }
-        }
+        liste = matchingList;
+        images = matchingImages;
         items.setItems(liste);
     }
 
