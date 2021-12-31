@@ -1,5 +1,8 @@
 package com.example.traitementimages;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -234,6 +237,22 @@ public class HelloController {
     public void rotation(int x) {
         currentPicture.setRotation(x);
         imageView.setRotate(currentPicture.getRotation());
+    }
+
+    @FXML
+    public void save() {
+        JAXBContext jaxbContext = null;
+        try {
+            jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            PictureDaoImpl pictureDao = new PictureDaoImpl();
+            jaxbMarshaller.marshal(pictureDao, System.out);
+            //jaxbMarshaller.marshal(new PictureDaoImpl(), Paths.get("src/main/resources/save/dataPictures.xml").toFile());
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
 }

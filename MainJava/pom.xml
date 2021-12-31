@@ -38,15 +38,19 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>3.0.0</version>
-        </dependency>
+        <!-- JAXB API only -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>3.0.0</version>
+        </dependency>
+
+        <!-- JAXB RI, Jakarta XML Binding -->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>3.0.0</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

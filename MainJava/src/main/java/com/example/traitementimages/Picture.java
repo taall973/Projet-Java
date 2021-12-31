@@ -1,11 +1,17 @@
 package com.example.traitementimages;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import javafx.scene.image.*;
 
 import java.io.File;
 import java.util.ArrayList;
 
+@XmlRootElement
+
 public class Picture {
+
+    @XmlElement
     private Image image, filteredImage;
     private File file;
     private ArrayList<String> tags;
@@ -14,7 +20,9 @@ public class Picture {
     private int width, height, red, green, blue, opacity, rotation, id;
     private boolean invert;
     private WritableImage writableImage;
+    @XmlElement(type = Object.class)
     private PixelWriter pixelWriter;
+    @XmlElement(type = Object.class)
     private PixelReader pixelReader;
 
     public Picture(Image image, File file, int id) {

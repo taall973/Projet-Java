@@ -1,9 +1,17 @@
 package com.example.traitementimages;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
 import java.util.ArrayList;
 
-public class PictureDaoImpl implements PictureDao {
+@XmlRootElement
 
+@XmlAccessorType(XmlAccessType.FIELD)
+public class PictureDaoImpl implements PictureDao {
+    @XmlElement
     private ArrayList<Picture> pictures;
 
     public PictureDaoImpl() {
