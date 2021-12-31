@@ -1,0 +1,42 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>230</x><y>70</y><w>250</w><h>330</h></coordinates><panel_attributes>Picture
+--
+- image: Image
+- file : File
+- tags : ArrayList&lt;String&gt;
+- inputPixels, outputPixels : int[]
+- width, height, red, blue, green, opacity : int
+- writableImage : WritableImage
+- pixelWriter : PixelWriter
+- pixelReader : PixelReader
+--
++ Student(Image image, File file)
++ getImage() : Image
++ getTags() : ArrayList&lt;String&gt;
++ getName() : String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>570</x><y>70</y><w>200</w><h>330</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+PictureDao
+--
+
+
+--
++ getPictures() : ArrayList&lt;Picture&gt;
++ addTags() : void
++ toBRG() : Image
++ toBlackAndWhite() : Image
++ toSepia() : Image
++ toPrewitt() : Image
++ getPixelIntensity() : int
++ changeRGB() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>510</y><w>200</w><h>210</h></coordinates><panel_attributes>PictureDaoImpl
+--
+- pictures : ArrayList&lt;Picture&gt;
+--
++ PictureDaoImpl()
++ getPictures() : ArrayList&lt;Picture&gt;
++ addTags() : void
++ toBRG() : Image
++ toBlackAndWhite() : Image
++ toSepia() : Image
++ toPrewitt() : Image
++ getPixelIntensity() : int
++ changeRGB() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>210</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+uses</panel_attributes><additional_attributes>10;20;100;20</additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>390</y><w>90</w><h>140</h></coordinates><panel_attributes>lt=&lt;-
+implements</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element></diagram>
