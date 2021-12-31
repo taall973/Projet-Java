@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.util.ArrayList;
 import javax.xml.*;
+import org.xml.*;
 
 public class RegisteredImages extends FilterImage { //implements quand on aura transformé FilterImage en interface
     ArrayList<String> tags;
@@ -31,5 +32,6 @@ public class RegisteredImages extends FilterImage { //implements quand on aura t
         tags.add(tag);
     }
 
-
+    public static void main (String[] args){
+    }
 }

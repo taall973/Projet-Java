@@ -13,4 +13,9 @@
       <module name="traitementImages" target="11" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="traitementImages" options="--add-exports java.xml/org.xml=com.example.traitementimages" />
+    </option>
+  </component>
 </project>
