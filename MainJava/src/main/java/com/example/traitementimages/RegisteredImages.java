@@ -1,9 +1,9 @@
 package com.example.traitementimages;
 
 import javafx.scene.image.Image;
-
 import java.io.File;
 import java.util.ArrayList;
+import javax.xml.*;
 
 public class RegisteredImages extends FilterImage { //implements quand on aura transformé FilterImage en interface
     ArrayList<String> tags;
