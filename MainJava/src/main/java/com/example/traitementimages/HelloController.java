@@ -138,6 +138,7 @@ public class HelloController {
         } else {
             imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
+        invert = !invert;
     }
 
     @FXML
