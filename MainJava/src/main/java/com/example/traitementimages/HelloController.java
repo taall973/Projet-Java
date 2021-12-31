@@ -32,7 +32,7 @@ public class HelloController {
     @FXML
     private TextField searchTag, addTag;
     @FXML
-    private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
+    private ImageView imageView, noFilter, blueRedGreen, blackAndWhite, sepia, prewitt;
 
     @FXML
     protected void initialize() {
@@ -87,6 +87,7 @@ public class HelloController {
                 currentPicture = new Picture(new Image(dest.toFile().toURI().toURL().toString()), file, images.getPictures().size());
                 images.addPicture(currentPicture);
                 imageView.setImage(currentPicture.getImage());
+                noFilter.setImage(currentPicture.getImage());
                 blueRedGreen.setImage(currentPicture.toBRG());
                 blackAndWhite.setImage(currentPicture.toBlackAndWhite());
                 sepia.setImage(currentPicture.toSepia());
@@ -102,6 +103,7 @@ public class HelloController {
         addTag.setText(null);
         getCurrentImage();
         imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());
@@ -135,9 +137,21 @@ public class HelloController {
     }
 
     @FXML
+    public void removeFilters() {
+        currentPicture = images.filter(currentPicture, 0);
+        imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
+        blueRedGreen.setImage(currentPicture.toBRG());
+        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
+        sepia.setImage(currentPicture.toSepia());
+        prewitt.setImage(currentPicture.toPrewitt());
+    }
+
+    @FXML
     public void blueRedGreenFilter() {
         currentPicture = images.filter(currentPicture, 1);
         imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());
@@ -148,6 +162,7 @@ public class HelloController {
     public void blackAndWhiteFilter() {
         currentPicture = images.filter(currentPicture, 2);
         imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());
@@ -158,6 +173,7 @@ public class HelloController {
     public void sepiaFilter() {
         currentPicture = images.filter(currentPicture, 3);
         imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());
@@ -168,6 +184,7 @@ public class HelloController {
     public void prewittFilter() {
         currentPicture = images.filter(currentPicture, 4);
         imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());

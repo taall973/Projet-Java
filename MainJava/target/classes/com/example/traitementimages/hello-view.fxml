@@ -17,96 +17,94 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="gp" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="627.0" prefWidth="1488.0"
-          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.example.traitementimages.HelloController">
+<GridPane fx:id="gp" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="627.0" prefWidth="1488.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traitementimages.HelloController">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="400.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="400.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER"/>
-        <RowConstraints minHeight="-Infinity" prefHeight="150.0" valignment="CENTER"/>
-        <RowConstraints minHeight="-Infinity" prefHeight="250.0" vgrow="ALWAYS"/>
-        <RowConstraints minHeight="-Infinity" prefHeight="50.0"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+        <RowConstraints minHeight="-Infinity" prefHeight="150.0" valignment="CENTER" />
+        <RowConstraints minHeight="-Infinity" prefHeight="250.0" vgrow="ALWAYS" />
+        <RowConstraints minHeight="-Infinity" prefHeight="50.0" />
     </rowConstraints>
     <children>
         <!-- Partie gauche-->
-        <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="NEVER"
-              GridPane.rowIndex="2">
+        <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
             <children>
-                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                <TextField fx:id="searchTag"/>
-                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                <ListView fx:id="itemsTag" prefHeight="200.0" prefWidth="200.0"/>
-                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0"/>
-                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
+                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                <TextField fx:id="searchTag" promptText="Chercher un tag" />
+                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                <ListView fx:id="itemsTag" prefHeight="200.0" prefWidth="200.0" />
+                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0" />
+                <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
             </children>
             <GridPane.margin>
-                <Insets left="10.0"/>
+                <Insets left="10.0" />
             </GridPane.margin>
         </VBox>
         <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
             <children>
-                <Button mnemonicParsing="false" onAction="#rotateLeft" text="Rotation gauche"/>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <Button mnemonicParsing="false" onAction="#rotateRight" text="Rotation droite"/>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <Button fx:id="vInv" mnemonicParsing="false" onAction="#verticalInvert" text="Inversion verticale"/>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <Button fx:id="hInv" mnemonicParsing="false" onAction="#horizontalInvert" text="Inversion horizontale"/>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <Button mnemonicParsing="false" text="Enregistrer"/>
+                <Button mnemonicParsing="false" onAction="#rotateLeft" text="Rotation gauche" />
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <Button mnemonicParsing="false" onAction="#rotateRight" text="Rotation droite" />
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <Button fx:id="vInv" mnemonicParsing="false" onAction="#verticalInvert" text="Inversion verticale" />
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <Button fx:id="hInv" mnemonicParsing="false" onAction="#horizontalInvert" text="Inversion horizontale" />
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <Button mnemonicParsing="false" text="Enregistrer" />
             </children>
         </HBox>
         <MenuBar GridPane.columnSpan="3">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                        <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile"
-                                  text="Ajouter une image"/>
+                        <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile" text="Ajouter une image" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-        <HBox fx:id="filters" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647"
-              GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+        <HBox fx:id="filters" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
             <children>
-                <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#blueRedGreenFilter"
-                           pickOnBounds="true" preserveRatio="true">
+            <Region layoutX="1400.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+            <ImageView fx:id="noFilter" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#removeFilters" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/placeholder-image.png" />
+               </image>
+            </ImageView>
+            <Region layoutX="1054.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+                <ImageView fx:id="blueRedGreen" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#blueRedGreenFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../images/placeholder-image.png"/>
+                        <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0"
-                           onMouseReleased="#blackAndWhiteFilter" pickOnBounds="true" preserveRatio="true">
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <ImageView fx:id="blackAndWhite" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#blackAndWhiteFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../images/placeholder-image.png"/>
+                        <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#sepiaFilter"
-                           pickOnBounds="true" preserveRatio="true">
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <ImageView fx:id="sepia" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#sepiaFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../images/placeholder-image.png"/>
+                        <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
-                <Region prefHeight="200.0" prefWidth="200.0"/>
-                <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#prewittFilter"
-                           pickOnBounds="true" preserveRatio="true">
+                <Region prefHeight="200.0" prefWidth="200.0" />
+                <ImageView fx:id="prewitt" fitHeight="150.0" fitWidth="200.0" onMouseReleased="#prewittFilter" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../images/placeholder-image.png"/>
+                        <Image url="@../../../images/placeholder-image.png" />
                     </image>
                 </ImageView>
+            <Region layoutX="210.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
             </children>
         </HBox>
-        <ImageView fx:id="imageView" fitHeight="310.0" fitWidth="487.0" pickOnBounds="false" preserveRatio="true"
-                   GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <ImageView fx:id="imageView" fitHeight="310.0" fitWidth="487.0" pickOnBounds="false" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <image>
-                <Image url="@../../../images/placeholder-image.png"/>
+                <Image url="@../../../images/placeholder-image.png" />
             </image>
         </ImageView>
         <!--Partie droite-->
@@ -114,16 +112,16 @@
             <children>
                 <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
                     <children>
-                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                        <TextField fx:id="addTag"/>
-                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                        <ListView fx:id="imageTags" prefHeight="200.0" prefWidth="200.0"/>
-                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
-                        <PasswordField fx:id="password"/>
-                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0"/>
+                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                        <TextField fx:id="addTag" promptText="Ajouter un tag à l'image" />
+                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                        <ListView fx:id="imageTags" prefHeight="200.0" prefWidth="200.0" />
+                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+                        <PasswordField fx:id="password" promptText="Mot de passe" />
+                        <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
                     </children>
                     <HBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                     </HBox.margin>
                 </VBox>
             </children>

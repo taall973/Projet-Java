@@ -38,6 +38,7 @@ public class PictureDaoImpl implements PictureDao {
                 break;
             default:
                 current.setFilteredImage(current.getImage());
+                current.setChanges(new ArrayList<>());
         }
         return current;
     }
