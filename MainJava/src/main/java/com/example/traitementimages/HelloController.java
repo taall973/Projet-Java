@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +43,7 @@ public class HelloController {
     @FXML
     private Button vInv;
     private ArrayList<RegisteredImages> images;
+    boolean invert = true;
 
     @FXML
     protected void initialize() {
@@ -102,6 +104,8 @@ public class HelloController {
                 blackAndWhite.setImage(filterImage.toBlackAndWhite());
                 sepia.setImage(filterImage.toSepia());
                 prewitt.setImage(filterImage.toPrewitt());
+                items.getSelectionModel().select(filterImage.getName());
+
             }
         }
     }
@@ -129,7 +133,25 @@ public class HelloController {
     public void horizontalInvert() {
         getCurrentImage();
         imageView.setImage(filterImage.getImage());
-        imageView.setRotate(0);
+        if (invert) {
+            imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        } else {
+            imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        }
+    }
+
+    @FXML
+    public void rotateLeft() {
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate - 90);
+    }
+
+    @FXML
+    public void rotateRight() {
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate + 90);
     }
 
     @FXML
