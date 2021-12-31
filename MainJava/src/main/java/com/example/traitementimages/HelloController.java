@@ -24,7 +24,7 @@ public class HelloController {
     Stage stage;
     @FXML
     private FileChooser fc;
-    private ObservableList<String> liste = FXCollections.observableArrayList();
+    private ObservableList<String> imagesList = FXCollections.observableArrayList();
     private ObservableList<String> tagList = FXCollections.observableArrayList();
     private ObservableList<String> imageTagList = FXCollections.observableArrayList();
     @FXML
@@ -71,7 +71,7 @@ public class HelloController {
     protected void chooseFile() throws IOException {
         File file = fc.showOpenDialog(stage);
         if (file != null) {
-            if (liste.contains(file.getName())) {
+            if (imagesList.contains(file.getName())) {
                 Alert sameName = new Alert(Alert.AlertType.INFORMATION, "Un fichier enregistré à ce nom existe déjà !");
                 sameName.setTitle("Doublon détecté");
                 sameName.setHeaderText(null);
@@ -79,8 +79,8 @@ public class HelloController {
                 items.getSelectionModel().select(file.getName());
                 showImage();
             } else {
-                liste.add(file.getName());
-                items.setItems(liste);
+                imagesList.add(file.getName());
+                items.setItems(imagesList);
                 Path source = Paths.get(file.getAbsolutePath());
                 Path dest = Paths.get("src/main/resources/images/" + file.getName());
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
@@ -197,9 +197,9 @@ public class HelloController {
         for (File file : directory.listFiles()) {
             Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
             images.addPicture(img);
-            liste.add(img.getFile().getName());
+            imagesList.add(img.getFile().getName());
         }
-        items.setItems(liste);
+        items.setItems(imagesList);
     }
 
     public void imagesWithTags() {
@@ -210,8 +210,8 @@ public class HelloController {
                 matchingList.add(picture.getFile().getName());
             }
         }
-        liste = matchingList;
-        items.setItems(liste);
+        imagesList = matchingList;
+        items.setItems(imagesList);
     }
 
     public void rotation(int x) {
