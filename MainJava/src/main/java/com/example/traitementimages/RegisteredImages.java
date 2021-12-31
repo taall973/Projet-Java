@@ -1,10 +1,12 @@
 package com.example.traitementimages;
 
 import javafx.scene.image.Image;
-
 import java.io.File;
 import java.util.ArrayList;
-
+/*
+import javax.xml.*;
+import org.xml.*;
+*/
 public class RegisteredImages extends FilterImage { //implements quand on aura transformé FilterImage en interface
     ArrayList<String> tags;
     File name;
@@ -30,6 +32,5 @@ public class RegisteredImages extends FilterImage { //implements quand on aura t
     public void addTag(String tag) {
         tags.add(tag);
     }
-
 
 }
