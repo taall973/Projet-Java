@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="traitementImages" options="--add-exports java.xml/org.xml=com.example.traitementimages" />
+      <module name="traitementImages" options="" />
     </option>
   </component>
 </project>

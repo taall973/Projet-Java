@@ -1,30 +1,198 @@
-/*package com.example.traitementimages;
+package com.example.traitementimages;
 
 import javafx.scene.image.*;
-import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 
-public class FilterImage {
-    private Image image;
+public class Picture {
+    private Image image, filteredImage;
+    private File file;
+    private ArrayList<String> tags;
+    private ArrayList<Integer> changes;
     private int[] inputPixels, outputPixels;
-    private int height, width;
+    private int width, height, red, green, blue, opacity, rotation, id;
+    private boolean invert;
     private WritableImage writableImage;
     private PixelWriter pixelWriter;
     private PixelReader pixelReader;
-    private int red, blue, green, opacity;
 
-    public FilterImage(Image image) {
+    public Picture(Image image, File file, int id) {
+        rotation = 0;
+        invert = false;
         this.image = image;
+        this.filteredImage = image;
+        this.file = file;
+        this.id = id;
+        tags = new ArrayList<>();
+        changes = new ArrayList<>();
         width = (int) image.getWidth();
         height = (int) image.getHeight();
         inputPixels = new int[width * height * 4];
+        outputPixels = new int[width * height * 4];
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Image getFilteredImage() {
+        return filteredImage;
+    }
+
+    public void setFilteredImage(Image image) {
+        this.filteredImage = image;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
+
+    public ArrayList<Integer> getChanges() {
+        return changes;
+    }
+
+    public void setChanges(ArrayList<Integer> changes) {
+        this.changes = changes;
+    }
+
+    public int[] getInputPixels() {
+        return inputPixels;
+    }
+
+    public void setInputPixels(int[] inputPixels) {
+        this.inputPixels = inputPixels;
+    }
+
+    public int[] getOutputPixels() {
+        return outputPixels;
+    }
+
+    public void setOutputPixels(int[] outputPixels) {
+        this.outputPixels = outputPixels;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getRed() {
+        return red;
+    }
+
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public int getGreen() {
+        return green;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public int getBlue() {
+        return blue;
+    }
+
+    public void setBlue(int blue) {
+        this.blue = blue;
+    }
+
+    public int getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(int opacity) {
+        this.opacity = opacity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation % 360;
+    }
+
+    public boolean isInvert() {
+        return invert;
+    }
+
+    public void setInvert(boolean invert) {
+        this.invert = invert;
+    }
+
+    public WritableImage getWritableImage() {
+        return writableImage;
+    }
+
+    public void setWritableImage(WritableImage writableImage) {
+        this.writableImage = writableImage;
+    }
+
+    public PixelWriter getPixelWriter() {
+        return pixelWriter;
+    }
+
+    public void setPixelWriter(PixelWriter pixelWriter) {
+        this.pixelWriter = pixelWriter;
+    }
+
+    public PixelReader getPixelReader() {
+        return pixelReader;
+    }
+
+    public void setPixelReader(PixelReader pixelReader) {
+        this.pixelReader = pixelReader;
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    public void addChange(int i) {
+        changes.add(i);
     }
 
     public void changeRGB(int p) {
@@ -34,11 +202,7 @@ public class FilterImage {
         this.blue = (p & 0xff);
     }
 
-    public Image getImage() {
-        return this.image;
-    }
-
-    public Image bottomToTop() {
+    /*public void bottomToTop() { on va supprimer cette fonction si on a pas le temps d'intégrer la rotation, ...
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
@@ -49,11 +213,11 @@ public class FilterImage {
         //    outputPixels[j++] = inputPixels[i];
         //}
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, height * width * 4 - 1, width * 4);
-        return writableImage;
-    }
+        this.filteredImage = writableImage;
+    }*/
 
     public Image toBRG() {
-        pixelReader = image.getPixelReader();
+        pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
@@ -70,7 +234,7 @@ public class FilterImage {
     }
 
     public Image toBlackAndWhite() {
-        pixelReader = image.getPixelReader();
+        pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
@@ -87,7 +251,7 @@ public class FilterImage {
     }
 
     public Image toSepia() {
-        pixelReader = image.getPixelReader();
+        pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
@@ -128,7 +292,7 @@ public class FilterImage {
     }
 
     public Image toPrewitt() {
-        pixelReader = image.getPixelReader();
+        pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
@@ -160,4 +324,4 @@ public class FilterImage {
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
     }
-}*/
+}

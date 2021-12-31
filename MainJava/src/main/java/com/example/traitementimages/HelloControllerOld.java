@@ -1,4 +1,4 @@
-package com.example.traitementimages;
+/*package com.example.traitementimages;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,14 +16,17 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
 
-public class HelloController {
+public class HelloControllerOld {
 
-    private Picture currentPicture;
-    private PictureDaoImpl images;
+    private RegisteredImages filterImage;
     Stage stage;
+    private int rotate; //variable qui contient la valeur de la rotation de l'image affichée
     @FXML
     private FileChooser fc;
+    @FXML
+    private MenuItem pickImage;
     private ObservableList<String> liste = FXCollections.observableArrayList();
     private ObservableList<String> tagList = FXCollections.observableArrayList();
     private ObservableList<String> imageTagList = FXCollections.observableArrayList();
@@ -33,10 +36,15 @@ public class HelloController {
     private TextField searchTag, addTag;
     @FXML
     private ImageView imageView, blueRedGreen, blackAndWhite, sepia, prewitt;
+    @FXML
+    private Button vInv;
+    private ArrayList<RegisteredImages> images;
+    boolean invert = true;
 
     @FXML
     protected void initialize() {
-        images = new PictureDaoImpl();
+        images = new ArrayList<>();
+        rotation(0);
         loadImages();
         fc = new FileChooser();
         searchTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -57,7 +65,7 @@ public class HelloController {
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
                     if (!(imageTagList.contains(addTag.getText()))) {
-                        images.getPictures().get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
+                        images.get(items.getSelectionModel().getSelectedIndex()).addTag(addTag.getText());
                         imageTagList.add(addTag.getText());
                         imageTags.setItems(imageTagList);
                         addTag.setText(null);
@@ -79,20 +87,20 @@ public class HelloController {
                 items.getSelectionModel().select(file.getName());
                 showImage();
             } else {
+                rotation(0);
                 liste.add(file.getName());
                 items.setItems(liste);
                 Path source = Paths.get(file.getAbsolutePath());
                 Path dest = Paths.get("src/main/resources/images/" + file.getName());
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-                currentPicture = new Picture(new Image(dest.toFile().toURI().toURL().toString()), file, images.getPictures().size());
-                images.addPicture(currentPicture);
-                imageView.setImage(currentPicture.getImage());
-                blueRedGreen.setImage(currentPicture.toBRG());
-                blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-                sepia.setImage(currentPicture.toSepia());
-                prewitt.setImage(currentPicture.toPrewitt());
-                items.getSelectionModel().select(currentPicture.getFile().getName());
-                rotation(0);
+                Image image = new Image(dest.toFile().toURI().toURL().toString());
+                filterImage = new RegisteredImages(image, file);
+                imageView.setImage(filterImage.getImage());
+                blueRedGreen.setImage(filterImage.toBRG());
+                blackAndWhite.setImage(filterImage.toBlackAndWhite());
+                sepia.setImage(filterImage.toSepia());
+                prewitt.setImage(filterImage.toPrewitt());
+                items.getSelectionModel().select(filterImage.getName());
             }
         }
     }
@@ -100,88 +108,80 @@ public class HelloController {
     @FXML
     public void showImage() {
         addTag.setText(null);
+        rotation(0);
         getCurrentImage();
-        imageView.setImage(currentPicture.getFilteredImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
-        rotation(currentPicture.getRotation());
+        imageView.setImage(filterImage.getImage());
+        blueRedGreen.setImage(filterImage.toBRG());
+        blackAndWhite.setImage(filterImage.toBlackAndWhite());
+        sepia.setImage(filterImage.toSepia());
+        prewitt.setImage(filterImage.toPrewitt());
     }
 
     @FXML
     public void verticalInvert() {
-        rotation(currentPicture.getRotation() + 180);
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate + 180);
     }
 
     @FXML
     public void horizontalInvert() {
-        if (!currentPicture.isInvert()) {
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        if (invert) {
             imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         } else {
             imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
-        currentPicture.setInvert(!currentPicture.isInvert());
+        invert = !invert;
     }
 
     @FXML
     public void rotateLeft() {
-        rotation(currentPicture.getRotation() - 90);
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate - 90);
     }
 
     @FXML
     public void rotateRight() {
-        rotation(currentPicture.getRotation() + 90);
+        getCurrentImage();
+        imageView.setImage(filterImage.getImage());
+        rotation(rotate + 90);
     }
 
     @FXML
     public void blueRedGreenFilter() {
-        currentPicture = images.filter(currentPicture, 1);
-        imageView.setImage(currentPicture.getFilteredImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
+        getCurrentImage();
+        imageView.setImage(filterImage.toBRG());
     }
 
     @FXML
     public void blackAndWhiteFilter() {
-        currentPicture = images.filter(currentPicture, 2);
-        imageView.setImage(currentPicture.getFilteredImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
+        getCurrentImage();
+        imageView.setImage(filterImage.toBlackAndWhite());
     }
 
     @FXML
     public void sepiaFilter() {
-        currentPicture = images.filter(currentPicture, 3);
-        imageView.setImage(currentPicture.getFilteredImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
+        getCurrentImage();
+        imageView.setImage(filterImage.toSepia());
     }
 
     @FXML
     public void prewittFilter() {
-        currentPicture = images.filter(currentPicture, 4);
-        imageView.setImage(currentPicture.getFilteredImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
+        getCurrentImage();
+        imageView.setImage(filterImage.toPrewitt());
     }
 
     public void getCurrentImage() {
         imageTags.getItems().clear();
         String file = items.getSelectionModel().getSelectedItem();
-        for (Picture picture : images.getPictures()) {
-            if (picture.getFile().getName().equals(file)) {
-                currentPicture = picture;
+        for (RegisteredImages image : images) {
+            if (image.getName().equals(file)) {
+                filterImage = image;
                 imageTagList.removeAll();
-                imageTagList.addAll(currentPicture.getTags());
+                imageTagList.addAll(filterImage.getTags());
                 imageTags.setItems(imageTagList);
                 break;
             }
@@ -195,28 +195,31 @@ public class HelloController {
     public void loadImages() {
         File directory = Paths.get("src/main/resources/images/").toFile();
         for (File file : directory.listFiles()) {
-            Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
-            images.addPicture(img);
-            liste.add(img.getFile().getName());
+            RegisteredImages img = new RegisteredImages(new Image(file.toURI().toString()), file);
+            images.add(img);
+            liste.add(img.getName());
         }
         items.setItems(liste);
     }
 
     public void imagesWithTags() {
+        ArrayList<RegisteredImages> matchingImages = new ArrayList<>();
         ObservableList<String> matchingList = FXCollections.observableArrayList();
 
-        for (Picture picture : images.getPictures()) {
-            if (tagList.stream().allMatch(picture.getTags()::contains)) {
-                matchingList.add(picture.getFile().getName());
+        for (RegisteredImages image : images) {
+            if (tagList.stream().allMatch(image.getTags()::contains)) {
+                matchingImages.add(image);
+                matchingList.add(image.getName());
             }
         }
         liste = matchingList;
+        images = matchingImages;
         items.setItems(liste);
     }
 
     public void rotation(int x) {
-        currentPicture.setRotation(x);
-        imageView.setRotate(currentPicture.getRotation());
+        rotate = x;
+        imageView.setRotate(rotate);
     }
 
-}
+}*/
