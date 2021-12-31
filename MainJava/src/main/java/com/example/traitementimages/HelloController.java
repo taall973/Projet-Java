@@ -16,6 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Stream;
 
 public class HelloController {
 
@@ -179,18 +183,32 @@ public class HelloController {
     }
 
     public void imagesWithTags() {
-        items.getItems().clear();
-        System.out.println(images.size());
-        /*for (RegisteredImages image : images) {
-            if (!(image.getTags().containsAll(tagList))) {
-                images.remove(image);
-                liste.remove(image.getName());
+        /*System.out.println(liste.size());
+        System.out.println(liste.size());
+        boolean match = true;
+        for (int i = 0; i < images.size(); i++) {
+            for (int j = 0; j < tagList.size(); j++) {
+                if (!images.get(i).getTags().contains(tagList.get(j))) {
+                    match = false;
+                }
+                if (!match) {
+                    System.out.println(i + " - " + images.size() + " - " + liste.size());
+                    liste.remove(i);
+                    images.remove(i);
+                }
             }
         }*/
-        for (int i = 0; i < images.size(); i++) {
+        for (RegisteredImages image : images){
+            if (tagList.stream().allMatch(image.getTags()::contains)){
 
-            if (!(images.get(i).getTags().stream().allMatch(tagList::contains))) {
-                liste.remove(images.get(i).getName());
+            }
+        }
+        ListIterator<RegisteredImages> iterator = images.listIterator();
+        for (int i = 0; i < images.size(); i++) {
+            System.out.println(i + " - " + images.size());
+            System.out.println(images.get(i).getName() + " - " + tagList.stream().allMatch(images.get(i).getTags()::contains));
+            if (!()) {
+                liste.remove(i);
                 images.remove(i);
             }
         }
