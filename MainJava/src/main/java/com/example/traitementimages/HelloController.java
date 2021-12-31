@@ -105,7 +105,6 @@ public class HelloController {
                 sepia.setImage(filterImage.toSepia());
                 prewitt.setImage(filterImage.toPrewitt());
                 items.getSelectionModel().select(filterImage.getName());
-
             }
         }
     }
