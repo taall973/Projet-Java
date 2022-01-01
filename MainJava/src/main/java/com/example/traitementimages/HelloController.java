@@ -220,12 +220,28 @@ public class HelloController {
 
     @FXML
     public void deleteImage() {
-
+        String deleteImage = items.getSelectionModel().getSelectedItem();
+        imagesList.remove(deleteImage);
+        for (Picture picture : images.getPictures()) {
+            if (picture.getFile().getName().equals(deleteImage)) {
+                images.getPictures().remove(picture);
+                break;
+            }
+        }
+        save();
     }
 
     @FXML
     public void deleteImageTag() {
-
+        String deletedTag = imageTags.getSelectionModel().getSelectedItem();
+        imageTagList.remove(deletedTag);
+        for (String tag : images.getPictures().get(currentPicture.getId()).getTags()) {
+            if (tag.equals(deletedTag)) {
+                images.getPictures().get(currentPicture.getId()).getTags().remove(tag);
+                break;
+            }
+        }
+        save();
     }
 
     public void getCurrentImage() {
