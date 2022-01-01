@@ -234,17 +234,6 @@ public class HelloController {
         String deleteImage = items.getSelectionModel().getSelectedItem();
         imagesList.remove(deleteImage);
         int removed = 0;
-        /*for (Picture picture : images.getPictures()) {
-            if (picture.getFile().getName().equals(deleteImage)) {
-                images.getPictures().remove(picture.getId());
-                picture.getFile().delete();
-                removed = picture.getId();
-                break;
-            }
-        }
-        for (int i = removed; i < images.getPictures().size(); i++) {
-            images.getPictures().get(i).setId(images.getPictures().get(i).getId() - 1);
-        }*/
         for (Picture picture : images.getPictures()) {
             if (picture.getFile().getName().equals(deleteImage)) {
                 images.getPictures().remove(picture.getId());
@@ -333,19 +322,18 @@ public class HelloController {
     }
 
     public void loadImages() {
-        File directory = Paths.get("src/main/resources/images/").toFile();
-        for (File file : directory.listFiles()) {
-            Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
-            images.addPicture(img);
-            imagesList.add(img.getFile().getName());
-        }
-        items.setItems(imagesList);
         JAXBContext jaxbContext = null;
         if (Paths.get("src/main/resources/save/dataPictures.xml").toFile().exists()) {
             try {
                 jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                 PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
+                imagesList = pictureDao.getPicturesOrder();
+                for (String fileName : imagesList) {
+                    File file = Paths.get("src/main/resources/images/" + fileName).toFile();
+                    Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
+                    images.addPicture(img);
+                }
                 for (Picture picture : images.getPictures()) {
                     Picture pictureTemp = pictureDao.getPictures().get(picture.getId());
                     picture.setFile(pictureTemp.getFile());
@@ -358,9 +346,17 @@ public class HelloController {
                     picture.setId(pictureTemp.getId());
                     picture.setInvert(pictureTemp.isInvert());
                 }
+                items.setItems(imagesList);
 
             } catch (JAXBException e) {
                 e.printStackTrace();
+            }
+        } else {
+            File directory = Paths.get("src/main/resources/images/").toFile();
+            for (File file : directory.listFiles()) {
+                Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
+                images.addPicture(img);
+                imagesList.add(img.getFile().getName());
             }
         }
     }
@@ -392,6 +388,7 @@ public class HelloController {
             PictureDaoImpl pictureDao = new PictureDaoImpl();
             //images.getPictures().sort(Picture::compareTo);
             pictureDao.setPictures(images.getPictures());
+            pictureDao.setPicturesOrder(imagesList);
             jaxbMarshaller.marshal(pictureDao, Paths.get("src/main/resources/save/dataPictures.xml").toFile());
 
         } catch (JAXBException e) {
