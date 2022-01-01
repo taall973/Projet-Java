@@ -41,7 +41,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteSearchTag" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
@@ -50,7 +50,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImage" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
@@ -134,7 +134,7 @@
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                            <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImageTag" />
                           </items>
                         </ContextMenu>
                      </contextMenu></ListView>

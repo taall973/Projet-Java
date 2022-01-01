@@ -203,6 +203,21 @@ public class HelloController {
         prewitt.setImage(currentPicture.toPrewitt());
     }
 
+    @FXML
+    public void deleteSearchTag() {
+
+    }
+
+    @FXML
+    public void deleteImage() {
+
+    }
+
+    @FXML
+    public void deleteImageTag() {
+
+    }
+
     public void getCurrentImage() {
         imageTags.getItems().clear();
         String file = items.getSelectionModel().getSelectedItem();
