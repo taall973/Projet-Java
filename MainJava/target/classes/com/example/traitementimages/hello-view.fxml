@@ -41,16 +41,16 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteSearchTag" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
                 <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0">
+                <ListView fx:id="items" prefHeight="200.0" prefWidth="200.0">
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImage" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
@@ -134,7 +134,7 @@
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                            <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImageTag" />
                           </items>
                         </ContextMenu>
                      </contextMenu></ListView>

@@ -46,7 +46,7 @@
                   </ContextMenu>
                </contextMenu></ListView>
                 <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-                <ListView fx:id="items" onMouseReleased="#showImage" prefHeight="200.0" prefWidth="200.0">
+                <ListView fx:id="items" prefHeight="200.0" prefWidth="200.0">
                <contextMenu>
                   <ContextMenu>
                     <items>

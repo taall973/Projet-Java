@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -46,6 +48,29 @@ public class HelloController {
         items.getSelectionModel().select("placeholder-image.png");
         showImage();
         fc = new FileChooser();
+
+        items.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                    addTag.setText(null);
+                    getCurrentImage();
+                    imageView.setImage(currentPicture.getFilteredImage());
+                    noFilter.setImage(currentPicture.getImage());
+                    blueRedGreen.setImage(currentPicture.toBRG());
+                    blackAndWhite.setImage(currentPicture.toBlackAndWhite());
+                    sepia.setImage(currentPicture.toSepia());
+                    prewitt.setImage(currentPicture.toPrewitt());
+                    if (currentPicture.isInvert()) {
+                        imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+                    } else {
+                        imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+                    }
+                    rotation(currentPicture.getRotation());
+                }
+            }
+        });
+
         searchTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -103,24 +128,6 @@ public class HelloController {
                 rotation(0);
             }
         }
-    }
-
-    @FXML
-    public void showImage() {
-        addTag.setText(null);
-        getCurrentImage();
-        imageView.setImage(currentPicture.getFilteredImage());
-        noFilter.setImage(currentPicture.getImage());
-        blueRedGreen.setImage(currentPicture.toBRG());
-        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
-        sepia.setImage(currentPicture.toSepia());
-        prewitt.setImage(currentPicture.toPrewitt());
-        if (currentPicture.isInvert()) {
-            imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        } else {
-            imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
-        }
-        rotation(currentPicture.getRotation());
     }
 
     @FXML
@@ -205,7 +212,10 @@ public class HelloController {
 
     @FXML
     public void deleteSearchTag() {
-
+        String deletedTag = itemsTag.getSelectionModel().getSelectedItem();
+        tagList.remove(deletedTag);
+        itemsTag.setItems(tagList);
+        imagesWithTags();
     }
 
     @FXML
@@ -230,6 +240,23 @@ public class HelloController {
                 break;
             }
         }
+    }
+
+    public void showImage() {
+        addTag.setText(null);
+        getCurrentImage();
+        imageView.setImage(currentPicture.getFilteredImage());
+        noFilter.setImage(currentPicture.getImage());
+        blueRedGreen.setImage(currentPicture.toBRG());
+        blackAndWhite.setImage(currentPicture.toBlackAndWhite());
+        sepia.setImage(currentPicture.toSepia());
+        prewitt.setImage(currentPicture.toPrewitt());
+        if (currentPicture.isInvert()) {
+            imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        } else {
+            imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        }
+        rotation(currentPicture.getRotation());
     }
 
     public void setStage(Stage stage) {
