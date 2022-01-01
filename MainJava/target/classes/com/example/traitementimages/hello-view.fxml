@@ -8,6 +8,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -41,7 +42,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteSearchTag" />
+                      <MenuItem mnemonicParsing="false" onAction="#deleteSearchTag" text="Supprimer" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
@@ -50,7 +51,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImage" />
+                      <MenuItem mnemonicParsing="false" onAction="#deleteImage" text="Supprimer" />
                     </items>
                   </ContextMenu>
                </contextMenu></ListView>
@@ -78,6 +79,8 @@
                 <Menu mnemonicParsing="false" text="Fichier">
                     <items>
                         <MenuItem fx:id="pickImage" mnemonicParsing="false" onAction="#chooseFile" text="Ajouter une image" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="addPassword" mnemonicParsing="false" onAction="#addPassword" text="Protéger l'image par un mot de passe" />
                     </items>
                 </Menu>
             </menus>
@@ -134,7 +137,7 @@
                      <contextMenu>
                         <ContextMenu>
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteImageTag" />
+                            <MenuItem mnemonicParsing="false" onAction="#deleteImageTag" text="Supprimer" />
                           </items>
                         </ContextMenu>
                      </contextMenu></ListView>

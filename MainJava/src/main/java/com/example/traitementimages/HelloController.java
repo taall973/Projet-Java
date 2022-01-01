@@ -8,7 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,7 +20,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -246,6 +253,27 @@ public class HelloController {
             }
         }
         save();
+    }
+
+    @FXML
+    public void addPassword() {
+        Alert create = new Alert(Alert.AlertType.CONFIRMATION);
+        ImageView secureIcon = new ImageView(Paths.get("src/main/resources/secure_icon.png").toFile().toURI().toString());
+        secureIcon.setFitHeight(48);
+        secureIcon.setFitWidth(48);
+        stage = (Stage) create.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(secureIcon.getImage());
+        double width = create.getDialogPane().getWidth();
+        PasswordField newPassword = new PasswordField();
+        newPassword.setPromptText("Nouveau mot de passe");
+        VBox parent = new VBox(newPassword);
+        parent.setPadding(new Insets(10));
+        create.getDialogPane().setContent(parent);
+        create.getDialogPane().setGraphic(secureIcon);
+        create.getDialogPane().setMinWidth(width);
+        create.setTitle("Ajouter un mot de passe");
+        create.setHeaderText("Empêchez d'autres personnes d'accéder à votre image");
+        create.show();
     }
 
     public void getCurrentImage() {
