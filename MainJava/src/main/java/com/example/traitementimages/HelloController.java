@@ -234,7 +234,7 @@ public class HelloController {
         String deleteImage = items.getSelectionModel().getSelectedItem();
         imagesList.remove(deleteImage);
         int removed = 0;
-        for (Picture picture : images.getPictures()) {
+        /*for (Picture picture : images.getPictures()) {
             if (picture.getFile().getName().equals(deleteImage)) {
                 images.getPictures().remove(picture.getId());
                 picture.getFile().delete();
@@ -245,6 +245,18 @@ public class HelloController {
         for (int i = removed; i < images.getPictures().size(); i++) {
             images.getPictures().get(i).setId(images.getPictures().get(i).getId() - 1);
         }*/
+        for (Picture picture : images.getPictures()) {
+            if (picture.getFile().getName().equals(deleteImage)) {
+                images.getPictures().remove(picture.getId());
+                picture.getFile().delete();
+                removed = picture.getId();
+                break;
+            }
+        }
+        for (int i = removed; i < images.getPictures().size(); i++) {
+            images.getPictures().get(i).setId(images.getPictures().get(i).getId() - 1);
+        }
+
         save();
         items.getSelectionModel().select(0);
         showImage();
