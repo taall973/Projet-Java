@@ -34,6 +34,7 @@ public class PictureDaoImpl implements PictureDao {
 
     @Override
     public Picture filter(Picture picture, int i, boolean onload) {
+        System.out.println(picture.getFile().getName() + " " + picture.getId());
         Picture current = pictures.get(picture.getId());
         if (!onload) {
             current.addChange(i);

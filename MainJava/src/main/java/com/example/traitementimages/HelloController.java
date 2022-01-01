@@ -127,7 +127,7 @@ public class HelloController {
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
                 currentPicture = new Picture(new Image(dest.toFile().toURI().toURL().toString()), dest.toFile(), images.getPictures().size());
                 images.addPicture(currentPicture);
-                Collections.sort(imagesList);
+                //Collections.sort(imagesList);
                 imageView.setImage(currentPicture.getImage());
                 noFilter.setImage(currentPicture.getImage());
                 blueRedGreen.setImage(currentPicture.toBRG());
@@ -233,15 +233,20 @@ public class HelloController {
     public void deleteImage() {
         String deleteImage = items.getSelectionModel().getSelectedItem();
         imagesList.remove(deleteImage);
+        int removed = 0;
         for (Picture picture : images.getPictures()) {
             if (picture.getFile().getName().equals(deleteImage)) {
-                images.getPictures().remove(picture);
+                images.getPictures().remove(picture.getId());
                 picture.getFile().delete();
+                removed = picture.getId();
                 break;
             }
         }
+        for (int i = removed; i < images.getPictures().size(); i++) {
+            images.getPictures().get(i).setId(images.getPictures().get(i).getId() - 1);
+        }*/
         save();
-        items.getSelectionModel().select("placeholder-image.png");
+        items.getSelectionModel().select(0);
         showImage();
     }
 
@@ -373,6 +378,7 @@ public class HelloController {
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             PictureDaoImpl pictureDao = new PictureDaoImpl();
+            //images.getPictures().sort(Picture::compareTo);
             pictureDao.setPictures(images.getPictures());
             jaxbMarshaller.marshal(pictureDao, Paths.get("src/main/resources/save/dataPictures.xml").toFile());
 
