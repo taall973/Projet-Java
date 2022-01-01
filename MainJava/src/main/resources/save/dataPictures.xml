@@ -2,31 +2,19 @@
 <pictureDaoImpl>
     <pictures>
         <file>src\main\resources\images\chevre.jpg</file>
-        <tags>chevre</tags>
-        <tags>nature</tags>
-        <tags>animaux</tags>
-        <tags>cute</tags>
-        <changes>1</changes>
-        <changes>4</changes>
-        <rotation>180</rotation>
+        <rotation>0</rotation>
         <id>0</id>
-        <invert>true</invert>
+        <invert>false</invert>
     </pictures>
     <pictures>
         <file>src\main\resources\images\download (3).jpg</file>
-        <tags>guns</tags>
-        <tags>game</tags>
-        <tags>fps</tags>
-        <changes>4</changes>
-        <changes>4</changes>
         <rotation>0</rotation>
         <id>1</id>
         <invert>false</invert>
     </pictures>
     <pictures>
         <file>src\main\resources\images\fond1.jpg</file>
-        <changes>3</changes>
-        <rotation>90</rotation>
+        <rotation>0</rotation>
         <id>2</id>
         <invert>false</invert>
     </pictures>
@@ -40,18 +28,6 @@
         <file>src\main\resources\images\placeholder-image.png</file>
         <rotation>0</rotation>
         <id>4</id>
-        <invert>true</invert>
-    </pictures>
-    <pictures>
-        <file>src\main\resources\images\TD AOO.png</file>
-        <rotation>0</rotation>
-        <id>5</id>
-        <invert>false</invert>
-    </pictures>
-    <pictures>
-        <file>src\main\resources\images\TD OMI page 2.png</file>
-        <rotation>0</rotation>
-        <id>6</id>
         <invert>false</invert>
     </pictures>
 </pictureDaoImpl>

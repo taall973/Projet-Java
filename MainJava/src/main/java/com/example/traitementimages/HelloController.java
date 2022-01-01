@@ -225,10 +225,13 @@ public class HelloController {
         for (Picture picture : images.getPictures()) {
             if (picture.getFile().getName().equals(deleteImage)) {
                 images.getPictures().remove(picture);
+                picture.getFile().delete();
                 break;
             }
         }
         save();
+        items.getSelectionModel().select("placeholder-image.png");
+        showImage();
     }
 
     @FXML
@@ -289,25 +292,27 @@ public class HelloController {
         }
         items.setItems(imagesList);
         JAXBContext jaxbContext = null;
-        try {
-            jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
-            for (Picture picture : images.getPictures()) {
-                Picture pictureTemp = pictureDao.getPictures().get(picture.getId());
-                picture.setFile(pictureTemp.getFile());
-                picture.setTags(pictureTemp.getTags());
-                picture.setChanges(pictureTemp.getChanges());
-                for (int i = 0; i < picture.getChanges().size(); i++) {
-                    images.filter(picture, picture.getChanges().get(i), true);
+        if (Paths.get("src/main/resources/save/dataPictures.xml").toFile().exists()) {
+            try {
+                jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
+                for (Picture picture : images.getPictures()) {
+                    Picture pictureTemp = pictureDao.getPictures().get(picture.getId());
+                    picture.setFile(pictureTemp.getFile());
+                    picture.setTags(pictureTemp.getTags());
+                    picture.setChanges(pictureTemp.getChanges());
+                    for (int i = 0; i < picture.getChanges().size(); i++) {
+                        images.filter(picture, picture.getChanges().get(i), true);
+                    }
+                    picture.setRotation(pictureTemp.getRotation());
+                    picture.setId(pictureTemp.getId());
+                    picture.setInvert(pictureTemp.isInvert());
                 }
-                picture.setRotation(pictureTemp.getRotation());
-                picture.setId(pictureTemp.getId());
-                picture.setInvert(pictureTemp.isInvert());
-            }
 
-        } catch (JAXBException e) {
-            e.printStackTrace();
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
         }
     }
 
