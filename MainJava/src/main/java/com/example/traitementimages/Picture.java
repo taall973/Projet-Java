@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @XmlRootElement
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Picture {
+public class Picture implements Comparable {
 
     @XmlTransient
     private Image image, filteredImage;
@@ -338,5 +338,18 @@ public class Picture {
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Picture picture = (Picture) o;
+        if (this.file.getName().compareTo(picture.getFile().getName()) >0){
+            return 1 ;
+        }else if  (this.file.getName().compareTo(picture.getFile().getName()) <0){
+            return -1 ;
+        }else {
+            return 0 ;
+        }
+
     }
 }
