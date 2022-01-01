@@ -126,6 +126,7 @@ public class HelloController {
                 prewitt.setImage(currentPicture.toPrewitt());
                 items.getSelectionModel().select(currentPicture.getFile().getName());
                 rotation(0);
+                save();
             }
         }
     }
