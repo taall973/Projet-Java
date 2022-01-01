@@ -8,9 +8,9 @@
         <tags>cute</tags>
         <changes>1</changes>
         <changes>4</changes>
-        <rotation>0</rotation>
+        <rotation>180</rotation>
         <id>0</id>
-        <invert>false</invert>
+        <invert>true</invert>
     </pictures>
     <pictures>
         <file>src\main\resources\images\download (3).jpg</file>
@@ -25,7 +25,8 @@
     </pictures>
     <pictures>
         <file>src\main\resources\images\fond1.jpg</file>
-        <rotation>0</rotation>
+        <changes>3</changes>
+        <rotation>90</rotation>
         <id>2</id>
         <invert>false</invert>
     </pictures>
@@ -39,7 +40,7 @@
         <file>src\main\resources\images\placeholder-image.png</file>
         <rotation>0</rotation>
         <id>4</id>
-        <invert>false</invert>
+        <invert>true</invert>
     </pictures>
     <pictures>
         <file>src\main\resources\images\TD AOO.png</file>

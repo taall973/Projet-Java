@@ -43,6 +43,8 @@ public class HelloController {
     protected void initialize() {
         images = new PictureDaoImpl();
         loadImages();
+        items.getSelectionModel().select("placeholder-image.png");
+        showImage();
         fc = new FileChooser();
         searchTag.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -113,6 +115,11 @@ public class HelloController {
         blackAndWhite.setImage(currentPicture.toBlackAndWhite());
         sepia.setImage(currentPicture.toSepia());
         prewitt.setImage(currentPicture.toPrewitt());
+        if (currentPicture.isInvert()) {
+            imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        } else {
+            imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        }
         rotation(currentPicture.getRotation());
     }
 
@@ -123,12 +130,12 @@ public class HelloController {
 
     @FXML
     public void horizontalInvert() {
-        if (!currentPicture.isInvert()) {
+        currentPicture.setInvert(!currentPicture.isInvert());
+        if (currentPicture.isInvert()) {
             imageView.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
         } else {
             imageView.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         }
-        currentPicture.setInvert(!currentPicture.isInvert());
     }
 
     @FXML
@@ -212,6 +219,7 @@ public class HelloController {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        items.requestFocus();
     }
 
     public void loadImages() {
