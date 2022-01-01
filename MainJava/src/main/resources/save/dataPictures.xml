@@ -2,7 +2,6 @@
 <pictureDaoImpl>
     <pictures>
         <file>src\main\resources\images\chevre.jpg</file>
-        <changes>4</changes>
         <rotation>0</rotation>
         <id>0</id>
         <invert>false</invert>
@@ -26,7 +25,7 @@
         <invert>false</invert>
     </pictures>
     <pictures>
-        <file>C:\Users\lalan\Pictures\fond3.png</file>
+        <file>src\main\resources\images\fond3.png</file>
         <rotation>0</rotation>
         <id>4</id>
         <invert>false</invert>

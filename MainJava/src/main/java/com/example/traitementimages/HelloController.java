@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class HelloController {
 
@@ -124,9 +125,9 @@ public class HelloController {
                 Path source = Paths.get(file.getAbsolutePath());
                 Path dest = Paths.get("src/main/resources/images/" + file.getName());
                 Files.copy(source, dest, StandardCopyOption.REPLACE_EXISTING);
-                currentPicture = new Picture(new Image(dest.toFile().toURI().toURL().toString()), file, images.getPictures().size());
+                currentPicture = new Picture(new Image(dest.toFile().toURI().toURL().toString()), dest.toFile(), images.getPictures().size());
                 images.addPicture(currentPicture);
-                images.getPictures().sort(Picture::compareTo);
+                Collections.sort(imagesList);
                 imageView.setImage(currentPicture.getImage());
                 noFilter.setImage(currentPicture.getImage());
                 blueRedGreen.setImage(currentPicture.toBRG());
