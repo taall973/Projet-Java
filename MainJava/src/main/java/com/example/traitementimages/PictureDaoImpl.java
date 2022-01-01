@@ -28,6 +28,11 @@ public class PictureDaoImpl implements PictureDao {
     }
 
     @Override
+    public void setPictures(ArrayList<Picture> pictures) {
+        this.pictures = pictures;
+    }
+
+    @Override
     public Picture filter(Picture picture, int i) {
         Picture current = pictures.get(picture.getId());
         current.addChange(i);

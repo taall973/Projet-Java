@@ -3,6 +3,7 @@ package com.example.traitementimages;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
 
 public class HelloController {
 
@@ -220,6 +222,27 @@ public class HelloController {
             imagesList.add(img.getFile().getName());
         }
         items.setItems(imagesList);
+        JAXBContext jaxbContext = null;
+        try {
+            jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
+            //ArrayList<Picture> pictures = new ArrayList<>();
+            for (Picture picture : images.getPictures()) {
+                Picture pictureTemp = pictureDao.getPictures().get(picture.getId());
+                picture.setFile(pictureTemp.getFile());
+                //if (!pictureTemp.getTags().isEmpty()) {
+                    picture.setTags(pictureTemp.getTags());
+                //}
+                picture.setChanges(pictureTemp.getChanges());
+                picture.setRotation(pictureTemp.getRotation());
+                picture.setId(pictureTemp.getId());
+                picture.setInvert(pictureTemp.isInvert());
+            }
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     public void imagesWithTags() {
@@ -247,8 +270,8 @@ public class HelloController {
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             PictureDaoImpl pictureDao = new PictureDaoImpl();
-            jaxbMarshaller.marshal(pictureDao, System.out);
-            //jaxbMarshaller.marshal(new PictureDaoImpl(), Paths.get("src/main/resources/save/dataPictures.xml").toFile());
+            pictureDao.setPictures(images.getPictures());
+            jaxbMarshaller.marshal(pictureDao, Paths.get("src/main/resources/save/dataPictures.xml").toFile());
 
         } catch (JAXBException e) {
             e.printStackTrace();

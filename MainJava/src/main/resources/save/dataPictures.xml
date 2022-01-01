@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pictureDaoImpl>
+    <pictures>
+        <file>src\main\resources\images\chevre.jpg</file>
+        <tags>chevre</tags>
+        <tags>nature</tags>
+        <tags>animaux</tags>
+        <changes>4</changes>
+        <rotation>90</rotation>
+        <id>0</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\download (3).jpg</file>
+        <tags>guns</tags>
+        <changes>1</changes>
+        <rotation>-90</rotation>
+        <id>1</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\fond1.jpg</file>
+        <rotation>0</rotation>
+        <id>2</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\fond3.png</file>
+        <rotation>0</rotation>
+        <id>3</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\placeholder-image.png</file>
+        <rotation>0</rotation>
+        <id>4</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\TD AOO.png</file>
+        <rotation>0</rotation>
+        <id>5</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\TD OMI page 2.png</file>
+        <rotation>0</rotation>
+        <id>6</id>
+        <invert>false</invert>
+    </pictures>
+</pictureDaoImpl>

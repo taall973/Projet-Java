@@ -1,7 +1,7 @@
 package com.example.traitementimages;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import javafx.scene.image.*;
 
 import java.io.File;
@@ -9,21 +9,31 @@ import java.util.ArrayList;
 
 @XmlRootElement
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Picture {
 
-    @XmlElement
+    @XmlTransient
     private Image image, filteredImage;
     private File file;
+    @XmlElement(name = "tags")
     private ArrayList<String> tags;
     private ArrayList<Integer> changes;
+    @XmlTransient
     private int[] inputPixels, outputPixels;
-    private int width, height, red, green, blue, opacity, rotation, id;
+    @XmlTransient
+    private int width, height, red, green, blue, opacity;
+    private int rotation, id;
     private boolean invert;
+    @XmlTransient
     private WritableImage writableImage;
-    @XmlElement(type = Object.class)
+    @XmlTransient
     private PixelWriter pixelWriter;
-    @XmlElement(type = Object.class)
+    @XmlTransient
     private PixelReader pixelReader;
+
+    private Picture() {
+
+    }
 
     public Picture(Image image, File file, int id) {
         rotation = 0;

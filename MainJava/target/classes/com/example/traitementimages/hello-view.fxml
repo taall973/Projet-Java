@@ -55,7 +55,7 @@
                 <Region prefHeight="200.0" prefWidth="200.0" />
                 <Button fx:id="hInv" mnemonicParsing="false" onAction="#horizontalInvert" text="Inversion horizontale" />
                 <Region prefHeight="200.0" prefWidth="200.0" />
-                <Button mnemonicParsing="false" text="Enregistrer" />
+                <Button mnemonicParsing="false" onAction="#save" text="Enregistrer" />
             </children>
         </HBox>
         <MenuBar GridPane.columnSpan="3">
