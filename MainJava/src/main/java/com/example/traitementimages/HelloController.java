@@ -328,7 +328,10 @@ public class HelloController {
                 jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
                 Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                 PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
-                imagesList = pictureDao.getPicturesOrder();
+                imagesList = FXCollections.observableArrayList();
+                for (String fileName : pictureDao.getPicturesOrder()) {
+                    imagesList.add(fileName);
+                }
                 for (String fileName : imagesList) {
                     File file = Paths.get("src/main/resources/images/" + fileName).toFile();
                     Picture img = new Picture(new Image(file.toURI().toString()), file, images.getPictures().size());
@@ -346,7 +349,6 @@ public class HelloController {
                     picture.setId(pictureTemp.getId());
                     picture.setInvert(pictureTemp.isInvert());
                 }
-                items.setItems(imagesList);
 
             } catch (JAXBException e) {
                 e.printStackTrace();
@@ -359,6 +361,7 @@ public class HelloController {
                 imagesList.add(img.getFile().getName());
             }
         }
+        items.setItems(imagesList);
     }
 
     public void imagesWithTags() {
@@ -388,7 +391,11 @@ public class HelloController {
             PictureDaoImpl pictureDao = new PictureDaoImpl();
             //images.getPictures().sort(Picture::compareTo);
             pictureDao.setPictures(images.getPictures());
-            pictureDao.setPicturesOrder(imagesList);
+            ArrayList<String> orderList = new ArrayList<>();
+            for (String fileName : imagesList) {
+                orderList.add(fileName);
+            }
+            pictureDao.setPicturesOrder(orderList);
             jaxbMarshaller.marshal(pictureDao, Paths.get("src/main/resources/save/dataPictures.xml").toFile());
 
         } catch (JAXBException e) {

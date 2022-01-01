@@ -4,7 +4,6 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,7 @@ public class PictureDaoImpl implements PictureDao {
     @XmlElement
     private ArrayList<Picture> pictures;
     @XmlElement
-    private ObservableList<String> picturesOrder;
+    private ArrayList<String> picturesOrder;
 
     public PictureDaoImpl() {
         this.pictures = new ArrayList<>();
@@ -36,18 +35,17 @@ public class PictureDaoImpl implements PictureDao {
     }
 
     @Override
-    public ObservableList<String> getPicturesOrder() {
+    public ArrayList<String> getPicturesOrder() {
         return this.picturesOrder;
     }
 
     @Override
-    public void setPicturesOrder(ObservableList<String> picturesOrder) {
+    public void setPicturesOrder(ArrayList<String> picturesOrder) {
         this.picturesOrder = picturesOrder;
     }
 
     @Override
     public Picture filter(Picture picture, int i, boolean onload) {
-        System.out.println(picture.getFile().getName() + " " + picture.getId());
         Picture current = pictures.get(picture.getId());
         if (!onload) {
             current.addChange(i);
