@@ -143,7 +143,7 @@ public class HelloController {
 
     @FXML
     public void removeFilters() {
-        currentPicture = images.filter(currentPicture, 0);
+        currentPicture = images.filter(currentPicture, 0, false);
         imageView.setImage(currentPicture.getFilteredImage());
         noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
@@ -154,7 +154,7 @@ public class HelloController {
 
     @FXML
     public void blueRedGreenFilter() {
-        currentPicture = images.filter(currentPicture, 1);
+        currentPicture = images.filter(currentPicture, 1, false);
         imageView.setImage(currentPicture.getFilteredImage());
         noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
@@ -165,7 +165,7 @@ public class HelloController {
 
     @FXML
     public void blackAndWhiteFilter() {
-        currentPicture = images.filter(currentPicture, 2);
+        currentPicture = images.filter(currentPicture, 2, false);
         imageView.setImage(currentPicture.getFilteredImage());
         noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
@@ -176,7 +176,7 @@ public class HelloController {
 
     @FXML
     public void sepiaFilter() {
-        currentPicture = images.filter(currentPicture, 3);
+        currentPicture = images.filter(currentPicture, 3, false);
         imageView.setImage(currentPicture.getFilteredImage());
         noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
@@ -187,7 +187,7 @@ public class HelloController {
 
     @FXML
     public void prewittFilter() {
-        currentPicture = images.filter(currentPicture, 4);
+        currentPicture = images.filter(currentPicture, 4, false);
         imageView.setImage(currentPicture.getFilteredImage());
         noFilter.setImage(currentPicture.getImage());
         blueRedGreen.setImage(currentPicture.toBRG());
@@ -227,14 +227,14 @@ public class HelloController {
             jaxbContext = JAXBContext.newInstance(PictureDaoImpl.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             PictureDaoImpl pictureDao = (PictureDaoImpl) jaxbUnmarshaller.unmarshal(Paths.get("src/main/resources/save/dataPictures.xml").toFile());
-            //ArrayList<Picture> pictures = new ArrayList<>();
             for (Picture picture : images.getPictures()) {
                 Picture pictureTemp = pictureDao.getPictures().get(picture.getId());
                 picture.setFile(pictureTemp.getFile());
-                //if (!pictureTemp.getTags().isEmpty()) {
-                    picture.setTags(pictureTemp.getTags());
-                //}
+                picture.setTags(pictureTemp.getTags());
                 picture.setChanges(pictureTemp.getChanges());
+                for (int i = 0; i < picture.getChanges().size(); i++) {
+                    images.filter(picture, picture.getChanges().get(i), true);
+                }
                 picture.setRotation(pictureTemp.getRotation());
                 picture.setId(pictureTemp.getId());
                 picture.setInvert(pictureTemp.isInvert());

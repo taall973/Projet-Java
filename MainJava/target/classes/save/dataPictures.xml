@@ -4,16 +4,22 @@
         <file>src\main\resources\images\chevre.jpg</file>
         <tags>chevre</tags>
         <tags>nature</tags>
+        <tags>animaux</tags>
+        <tags>cute</tags>
+        <changes>1</changes>
         <changes>4</changes>
-        <rotation>90</rotation>
+        <rotation>0</rotation>
         <id>0</id>
         <invert>false</invert>
     </pictures>
     <pictures>
         <file>src\main\resources\images\download (3).jpg</file>
         <tags>guns</tags>
-        <changes>1</changes>
-        <rotation>-90</rotation>
+        <tags>game</tags>
+        <tags>fps</tags>
+        <changes>4</changes>
+        <changes>4</changes>
+        <rotation>0</rotation>
         <id>1</id>
         <invert>false</invert>
     </pictures>

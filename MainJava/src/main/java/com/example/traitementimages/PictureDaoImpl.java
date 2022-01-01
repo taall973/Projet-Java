@@ -33,9 +33,11 @@ public class PictureDaoImpl implements PictureDao {
     }
 
     @Override
-    public Picture filter(Picture picture, int i) {
+    public Picture filter(Picture picture, int i, boolean onload) {
         Picture current = pictures.get(picture.getId());
-        current.addChange(i);
+        if (!onload) {
+            current.addChange(i);
+        }
         switch (i) {
             case 1:
                 current.setFilteredImage(current.toBRG());

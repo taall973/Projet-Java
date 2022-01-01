@@ -15,9 +15,8 @@ public class Picture {
     @XmlTransient
     private Image image, filteredImage;
     private File file;
-    @XmlElement(name = "tags")
-    private ArrayList<String> tags;
-    private ArrayList<Integer> changes;
+    private ArrayList<String> tags = new ArrayList<>();
+    private ArrayList<Integer> changes = new ArrayList<>();
     @XmlTransient
     private int[] inputPixels, outputPixels;
     @XmlTransient
@@ -42,8 +41,6 @@ public class Picture {
         this.filteredImage = image;
         this.file = file;
         this.id = id;
-        tags = new ArrayList<>();
-        changes = new ArrayList<>();
         width = (int) image.getWidth();
         height = (int) image.getHeight();
         inputPixels = new int[width * height * 4];
