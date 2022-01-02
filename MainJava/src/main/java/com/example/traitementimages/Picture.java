@@ -5,8 +5,8 @@ import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @XmlRootElement
@@ -239,12 +239,22 @@ public class Picture implements Comparable {
         int encrypt = 0;
         for (int pixel : inputPixels) {
             changeRGB(pixel);
-            encrypt = ((Math.floorMod((this.opacity + Math.abs(password[0])), 255) << 24) + (Math.floorMod((this.red + Math.abs(password[1])), 255) << 16) + (Math.floorMod((this.blue + Math.abs(password[2])), 255) << 8) + (Math.floorMod((this.green + Math.abs(password[3])), 255)));
+            encrypt = ((Math.floorMod((this.opacity + (int) password[0]), 255) << 24) + (Math.floorMod((this.red + (int) password[1]), 255) << 16) + (Math.floorMod((this.green + (int) password[2]), 255) << 8) + (Math.floorMod((this.blue + (int) password[3]), 255)));
             outputPixels[i++] = encrypt;
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         image = writableImage;
         filteredImage = writableImage;
+        /*try {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+            for (int px : outputPixels) {
+                out.write(px);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         //On vide les attributs de l'image
         inputPixels = new int[width * height * 4];
         outputPixels = new int[width * height * 4];
@@ -265,7 +275,7 @@ public class Picture implements Comparable {
         int decrypt = 0;
         for (int pixel : inputPixels) {
             changeRGB(pixel);
-            decrypt = ((Math.floorMod((this.opacity - Math.abs(password[0])), 255) << 24) + (Math.floorMod((this.red - Math.abs(password[1])), 255) << 16) + (Math.floorMod((this.blue - Math.abs(password[2])), 255) << 8) + (Math.floorMod((this.green - Math.abs(password[3])), 255)));
+            decrypt = ((Math.floorMod((this.opacity - ((int) password[0])), 255) << 24) + (Math.floorMod((this.red - ((int) password[1])), 255) << 16) + (Math.floorMod((this.green - ((int) password[2])), 255) << 8) + (Math.floorMod((this.blue - ((int) password[3])), 255)));
             outputPixels[i++] = decrypt;
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);

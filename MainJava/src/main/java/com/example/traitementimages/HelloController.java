@@ -51,6 +51,8 @@ public class HelloController {
     private TextField searchTag, addTag;
     @FXML
     private ImageView imageView, noFilter, blueRedGreen, blackAndWhite, sepia, prewitt;
+    @FXML
+    private PasswordField password;
 
     @FXML
     protected void initialize() {
@@ -284,7 +286,6 @@ public class HelloController {
         createPassword.getDialogPane().setMinWidth(width);
         createPassword.setTitle("Ajouter un mot de passe");
         createPassword.setHeaderText("Empêchez d'autres personnes d'accéder à votre image");
-        createPassword.show();
         createPassword.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 SecureRandom secureImage = new SecureRandom(newPassword.getText().getBytes(StandardCharsets.UTF_8));
@@ -294,6 +295,18 @@ public class HelloController {
                 currentPicture.encryptImage();
             }
         });
+    }
+
+    @FXML
+    public void decrypt() {
+        System.out.println("Mot de passe");
+        SecureRandom secureRandom = new SecureRandom(password.getText().getBytes(StandardCharsets.UTF_8));
+        byte[] seed = new byte[4];
+        secureRandom.nextBytes(seed);
+        if (seed.equals(currentPicture.getPassword())) {
+            currentPicture.setFilteredImage(currentPicture.decryptImage());
+        }
+        showImage();
     }
 
     public void getCurrentImage() {

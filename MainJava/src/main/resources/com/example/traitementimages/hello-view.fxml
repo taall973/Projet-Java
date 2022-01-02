@@ -142,7 +142,7 @@
                         </ContextMenu>
                      </contextMenu></ListView>
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-                        <PasswordField fx:id="password" promptText="Mot de passe" />
+                        <PasswordField fx:id="password" onAction="#decrypt" promptText="Mot de passe" />
                         <Region maxHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
                     </children>
                     <HBox.margin>
