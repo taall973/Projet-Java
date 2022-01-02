@@ -5,10 +5,13 @@ import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.*;
 
+import javax.crypto.spec.PBEKeySpec;
 import java.io.*;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
 
 @XmlRootElement
@@ -21,7 +24,7 @@ public class Picture implements Comparable {
     private File file;
     private ArrayList<String> tags;
     private ArrayList<Integer> changes;
-    private byte[] password;
+    private byte[] password, salt;
     @XmlTransient
     private int[] inputPixels, outputPixels;
     @XmlTransient
@@ -55,9 +58,14 @@ public class Picture implements Comparable {
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
+        salt = new byte[16];
         secureRandom.nextBytes(salt);
-        MessageDigest mD = MessageDigest.getInstance("SHA-512");
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         tags = new ArrayList<>();
         changes = new ArrayList<>();
     }
@@ -108,6 +116,14 @@ public class Picture implements Comparable {
 
     public void setPassword(byte[] password) {
         this.password = password;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     public int[] getInputPixels() {
