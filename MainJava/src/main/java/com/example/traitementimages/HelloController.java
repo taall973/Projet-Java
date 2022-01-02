@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -288,15 +289,22 @@ public class HelloController {
         createPassword.setHeaderText("Empêchez d'autres personnes d'accéder à votre image");
         createPassword.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                SecureRandom secureImage = new SecureRandom(newPassword.getText().getBytes(StandardCharsets.UTF_8));
-                byte[] seed = new byte[4];
-                secureImage.nextBytes(seed);
-                currentPicture.setSeed(seed);
-                currentPicture.encryptImage();
-                System.out.println(newPassword.getText());
-                for (byte b : currentPicture.getSeed()) {
-                    System.out.println(b);
+                try {
+                    SecureRandom secureRandom = new SecureRandom();
+                    byte[] salt = new byte[16];
+                    secureRandom.nextBytes(salt);
+                    MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+                    messageDigest.update(salt);
+                    currentPicture.setMessageDigest(messageDigest);
+                    currentPicture.setPassword(messageDigest.digest(newPassword.getText().getBytes(StandardCharsets.UTF_8)));
+                    currentPicture.encryptImage();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                System.out.println(newPassword.getText());
+                /*for (byte b : currentPicture.getPassword()) {
+                    System.out.println(b);
+                }*/
             }
         });
         showImage();
@@ -305,13 +313,14 @@ public class HelloController {
     @FXML
     public void decrypt() {
         System.out.println("Mot de passe");
-        byte [] seed = currentPicture.getSeed() ;
+        byte[] seed = currentPicture.getMessageDigest().digest(password.getText().getBytes(StandardCharsets.UTF_8));
 
-        currentPicture.setFilteredImage(currentPicture.decryptImage());
+//        currentPicture.setFilteredImage(currentPicture.decryptImage());
+        currentPicture.decryptImage();
         System.out.println(password.getText());
-        for (byte b : seed) {
+        /*for (byte b : seed) {
             System.out.println(b);
-        }
+        }*/
         showImage();
     }
 

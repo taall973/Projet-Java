@@ -24,7 +24,8 @@ public class Picture implements Comparable {
     private File file;
     private ArrayList<String> tags;
     private ArrayList<Integer> changes;
-    private byte[] password, salt;
+    private byte[] password;
+    private MessageDigest messageDigest;
     @XmlTransient
     private int[] inputPixels, outputPixels;
     @XmlTransient
@@ -57,15 +58,6 @@ public class Picture implements Comparable {
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
-        SecureRandom secureRandom = new SecureRandom();
-        salt = new byte[16];
-        secureRandom.nextBytes(salt);
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(salt);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
         tags = new ArrayList<>();
         changes = new ArrayList<>();
     }
@@ -118,12 +110,12 @@ public class Picture implements Comparable {
         this.password = password;
     }
 
-    public byte[] getSalt() {
-        return salt;
+    public MessageDigest getMessageDigest() {
+        return messageDigest;
     }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
+    public void setMessageDigest(MessageDigest messageDigest) {
+        this.messageDigest = messageDigest;
     }
 
     public int[] getInputPixels() {
@@ -295,11 +287,16 @@ public class Picture implements Comparable {
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
         outputPixels = new int[width * height * 4];
+        int o = password[0];
+        int r = password[1];
+        int g = password[2];
+        int b = password[3];
+        System.out.println(o + " " + r + " " + g + " " + b);
         int i = 0;
         int encrypt = 0;
         for (int pixel : inputPixels) {
-
-            outputPixels[i++] = pixel >> 24;
+            changeRGB(pixel);
+            outputPixels[i++] = ((((this.opacity + o) % 255) << 24) + (((this.red + r) % 255) << 16) + (((this.green + g) % 255) << 8) + ((this.blue + b) % 255));
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
@@ -332,8 +329,21 @@ public class Picture implements Comparable {
         outputPixels = new int[width * height * 4];
         int i = 0;
         int decrypt = 0;
+        int o = password[0];
+        int r = password[1];
+        int g = password[2];
+        int b = password[3];
+        System.out.println(o + " " + r + " " + g + " " + b);
+        int px = 250;
+        System.out.println(px);
+        px = Math.floorMod(px + o, 255);
+        System.out.println(px);
+        px = Math.floorMod(px - o, 255);
+        System.out.println(px);
         for (int pixel : inputPixels) {
-            outputPixels[i++] = pixel << 24;
+            changeRGB(pixel);
+            outputPixels[i++] = ((Math.floorMod(this.opacity - o, 255) << 24) + (Math.floorMod(this.red - r, 255) << 16) + (Math.floorMod(this.green - g, 255) << 8) + (Math.floorMod(this.blue - b, 255)));
+            // outputPixels[i++] = pixel <<1 ;
         }
         image = writableImage;
         filteredImage = writableImage;
