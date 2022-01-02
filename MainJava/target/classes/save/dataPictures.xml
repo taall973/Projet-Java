@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pictureDaoImpl>
+    <pictures>
+        <file>src\main\resources\images\chevre.jpg</file>
+        <changes>1</changes>
+        <changes>2</changes>
+        <password>AAAAAA==</password>
+        <rotation>0</rotation>
+        <id>0</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\download (3).jpg</file>
+        <password>AAAAAA==</password>
+        <rotation>0</rotation>
+        <id>1</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\fond1.jpg</file>
+        <password>AAAAAA==</password>
+        <rotation>0</rotation>
+        <id>2</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\fond3.png</file>
+        <password>AAAAAA==</password>
+        <rotation>0</rotation>
+        <id>3</id>
+        <invert>false</invert>
+    </pictures>
+    <pictures>
+        <file>src\main\resources\images\placeholder-image.png</file>
+        <password>AAAAAA==</password>
+        <rotation>0</rotation>
+        <id>4</id>
+        <invert>false</invert>
+    </pictures>
+    <picturesOrder>chevre.jpg</picturesOrder>
+    <picturesOrder>download (3).jpg</picturesOrder>
+    <picturesOrder>fond1.jpg</picturesOrder>
+    <picturesOrder>fond3.png</picturesOrder>
+    <picturesOrder>placeholder-image.png</picturesOrder>
+</pictureDaoImpl>

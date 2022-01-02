@@ -293,17 +293,25 @@ public class HelloController {
                 secureImage.nextBytes(seed);
                 currentPicture.setPassword(seed);
                 currentPicture.encryptImage();
+                System.out.println(newPassword.getText());
+                for (byte b : currentPicture.getPassword()) {
+                    System.out.println(b);
+                }
             }
         });
+        showImage();
     }
 
     @FXML
     public void decrypt() {
         System.out.println("Mot de passe");
-        SecureRandom secureRandom = new SecureRandom(password.getText().getBytes(StandardCharsets.UTF_8));
-        byte[] seed = new byte[4];
-        secureRandom.nextBytes(seed);
+        byte [] seed = currentPicture.getPassword() ;
+
         currentPicture.setFilteredImage(currentPicture.decryptImage());
+        System.out.println(password.getText());
+        for (byte b : seed) {
+            System.out.println(b);
+        }
         showImage();
     }
 

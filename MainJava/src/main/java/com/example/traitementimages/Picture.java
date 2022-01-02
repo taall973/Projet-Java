@@ -17,9 +17,9 @@ public class Picture implements Comparable {
     @XmlTransient
     private Image image, filteredImage;
     private File file;
-    private ArrayList<String> tags = new ArrayList<>();
-    private ArrayList<Integer> changes = new ArrayList<>();
-    private byte[] password = new byte[4];
+    private ArrayList<String> tags ;
+    private ArrayList<Integer> changes ;
+    private byte[] password ;
     @XmlTransient
     private int[] inputPixels, outputPixels;
     @XmlTransient
@@ -32,9 +32,9 @@ public class Picture implements Comparable {
     private PixelWriter pixelWriter;
     @XmlTransient
     private PixelReader pixelReader;
-
     private Picture() {
-
+        tags = new ArrayList<>();
+        changes = new ArrayList<>();
     }
 
     public Picture(Image image, File file, int id) {
@@ -51,7 +51,9 @@ public class Picture implements Comparable {
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
-
+        password = new byte[4];
+        tags = new ArrayList<>();
+        changes = new ArrayList<>();
     }
 
     public Image getImage() {
@@ -275,7 +277,7 @@ public class Picture implements Comparable {
         int encrypt = 0;
         for (int pixel : inputPixels) {
 
-            outputPixels[i++] = pixel>>1;
+            outputPixels[i++] = pixel>>24;
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
@@ -309,7 +311,7 @@ public class Picture implements Comparable {
         int i = 0;
         int decrypt = 0;
         for (int pixel : inputPixels) {
-            outputPixels[i++] = pixel <<1;
+            outputPixels[i++] = pixel <<24;
         }
         image = writableImage;
         filteredImage = writableImage;
