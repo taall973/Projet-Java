@@ -229,7 +229,7 @@ public class Picture implements Comparable {
         this.blue = (p & 0xff);
     }
 
-    public Image encryptImage() {
+    /* Image encryptImage() {
         pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
@@ -239,12 +239,45 @@ public class Picture implements Comparable {
         int encrypt = 0;
         for (int pixel : inputPixels) {
             changeRGB(pixel);
-            encrypt = ((Math.floorMod((this.opacity + (int) password[0]), 255) << 24) + (Math.floorMod((this.red + (int) password[1]), 255) << 16) + (Math.floorMod((this.green + (int) password[2]), 255) << 8) + (Math.floorMod((this.blue + (int) password[3]), 255)));
+            encrypt = ((Math.floorMod(this.opacity + 254, 255) << 24) + (Math.floorMod(this.red + 254, 255) << 16) + (Math.floorMod(this.green + 254, 255) << 8) + (Math.floorMod(this.blue + 254, 255)));
             outputPixels[i++] = encrypt;
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         image = writableImage;
         filteredImage = writableImage;
+        try {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+            for (int px : outputPixels) {
+                out.write(px);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //On vide les attributs de l'image
+        inputPixels = new int[width * height * 4];
+        outputPixels = new int[width * height * 4];
+        pixelReader = image.getPixelReader();
+        pixelWriter = writableImage.getPixelWriter();
+        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
+        //BufferedWriter im = new BufferedWriter();
+        return writableImage;
+    }*/
+
+    public Image encryptImage() {
+        pixelReader = filteredImage.getPixelReader();
+        pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
+        writableImage = new WritableImage(pixelReader, width, height);
+        pixelWriter = writableImage.getPixelWriter();
+        outputPixels = new int[width * height * 4];
+        int i = 0;
+        int encrypt = 0;
+        for (int pixel : inputPixels) {
+
+            outputPixels[i++] = pixel>>1;
+        }
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
             for (int px : outputPixels) {
@@ -256,6 +289,8 @@ public class Picture implements Comparable {
             e.printStackTrace();
         }*/
         //On vide les attributs de l'image
+        image = writableImage;
+        filteredImage = writableImage;
         inputPixels = new int[width * height * 4];
         outputPixels = new int[width * height * 4];
         pixelReader = image.getPixelReader();
@@ -274,10 +309,10 @@ public class Picture implements Comparable {
         int i = 0;
         int decrypt = 0;
         for (int pixel : inputPixels) {
-            changeRGB(pixel);
-            decrypt = ((Math.floorMod((this.opacity - ((int) password[0])), 255) << 24) + (Math.floorMod((this.red - ((int) password[1])), 255) << 16) + (Math.floorMod((this.green - ((int) password[2])), 255) << 8) + (Math.floorMod((this.blue - ((int) password[3])), 255)));
-            outputPixels[i++] = decrypt;
+            outputPixels[i++] = pixel <<1;
         }
+        image = writableImage;
+        filteredImage = writableImage;
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
     }
@@ -293,8 +328,9 @@ public class Picture implements Comparable {
         for (int pixel : inputPixels) {
             changeRGB(pixel);
             brg = ((this.opacity << 24) + (this.blue << 16) + (this.red << 8) + this.green);
-            outputPixels[i++] = brg;
+            outputPixels[i++]= brg;
         }
+
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
     }

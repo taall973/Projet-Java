@@ -303,9 +303,7 @@ public class HelloController {
         SecureRandom secureRandom = new SecureRandom(password.getText().getBytes(StandardCharsets.UTF_8));
         byte[] seed = new byte[4];
         secureRandom.nextBytes(seed);
-        if (seed.equals(currentPicture.getPassword())) {
-            currentPicture.setFilteredImage(currentPicture.decryptImage());
-        }
+        currentPicture.setFilteredImage(currentPicture.decryptImage());
         showImage();
     }
 
