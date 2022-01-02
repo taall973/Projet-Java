@@ -293,10 +293,14 @@ public class Picture implements Comparable {
         int b = password[3];
         int i = 0;
         int encrypt = 0;
+        changeRGB(inputPixels[0]);
+        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
         for (int pixel : inputPixels) {
             changeRGB(pixel);
             outputPixels[i++] = ((((this.opacity + o) % 255) << 24) + (((this.red + r) % 255) << 16) + (((this.green + g) % 255) << 8) + ((this.blue + b) % 255));
         }
+        changeRGB(outputPixels[0]);
+        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
@@ -332,14 +336,19 @@ public class Picture implements Comparable {
         int r = password[1];
         int g = password[2];
         int b = password[3];
+        changeRGB(inputPixels[0]);
+        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
         for (int pixel : inputPixels) {
             changeRGB(pixel);
-            outputPixels[i++] = ((Math.floorMod(this.opacity - o, 255) << 24) + (Math.floorMod(this.red - r, 255) << 16) + (Math.floorMod(this.green - g, 255) << 8) + (Math.floorMod(this.blue - b, 255)));
+            //outputPixels[i++] = ((((this.opacity - o) % 256) << 24) + (((this.red - r) % 256) << 16) + (((this.green - g) % 256) << 8) + ((this.blue - b) % 256));
+            outputPixels[i++] = ((Math.floorMod(this.opacity - o, 256)-1 << 24) + (Math.floorMod(this.red - r, 256) << 16) + (Math.floorMod(this.green - g, 256) << 8) + (Math.floorMod(this.blue - b, 256)));
             // outputPixels[i++] = pixel <<1 ;
         }
+        changeRGB(outputPixels[0]);
+        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         image = writableImage;
         filteredImage = writableImage;
-        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         return writableImage;
     }
 

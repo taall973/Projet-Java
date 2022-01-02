@@ -302,9 +302,9 @@ public class HelloController {
                     e.printStackTrace();
                 }
                 System.out.println(newPassword.getText());
-                /*for (byte b : currentPicture.getPassword()) {
-                    System.out.println(b);
-                }*/
+                for (int i = 0; i < 4; i++) {
+                    System.out.println(currentPicture.getPassword()[i]);
+                }
             }
         });
         showImage();
@@ -318,9 +318,9 @@ public class HelloController {
 //        currentPicture.setFilteredImage(currentPicture.decryptImage());
         currentPicture.decryptImage();
         System.out.println(password.getText());
-        /*for (byte b : seed) {
-            System.out.println(b);
-        }*/
+        for (int i = 0; i < 4; i++) {
+            System.out.println(currentPicture.getPassword()[i]);
+        }
         showImage();
     }
 
