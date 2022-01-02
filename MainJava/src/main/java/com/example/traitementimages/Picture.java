@@ -291,7 +291,6 @@ public class Picture implements Comparable {
         int r = password[1];
         int g = password[2];
         int b = password[3];
-        System.out.println(o + " " + r + " " + g + " " + b);
         int i = 0;
         int encrypt = 0;
         for (int pixel : inputPixels) {
@@ -333,13 +332,6 @@ public class Picture implements Comparable {
         int r = password[1];
         int g = password[2];
         int b = password[3];
-        System.out.println(o + " " + r + " " + g + " " + b);
-        int px = 250;
-        System.out.println(px);
-        px = Math.floorMod(px + o, 255);
-        System.out.println(px);
-        px = Math.floorMod(px - o, 255);
-        System.out.println(px);
         for (int pixel : inputPixels) {
             changeRGB(pixel);
             outputPixels[i++] = ((Math.floorMod(this.opacity - o, 255) << 24) + (Math.floorMod(this.red - r, 255) << 16) + (Math.floorMod(this.green - g, 255) << 8) + (Math.floorMod(this.blue - b, 255)));
