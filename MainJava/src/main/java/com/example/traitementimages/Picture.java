@@ -2,8 +2,10 @@ package com.example.traitementimages;
 
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import javafx.scene.effect.ImageInput;
 import javafx.scene.image.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ public class Picture implements Comparable {
     private File file;
     private ArrayList<String> tags = new ArrayList<>();
     private ArrayList<Integer> changes = new ArrayList<>();
+    private byte[] password = new byte[4];
     @XmlTransient
     private int[] inputPixels, outputPixels;
     @XmlTransient
@@ -48,6 +51,7 @@ public class Picture implements Comparable {
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
+
     }
 
     public Image getImage() {
@@ -88,6 +92,14 @@ public class Picture implements Comparable {
 
     public void setChanges(ArrayList<Integer> changes) {
         this.changes = changes;
+    }
+
+    public byte[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(byte[] password) {
+        this.password = password;
     }
 
     public int[] getInputPixels() {
@@ -217,19 +229,48 @@ public class Picture implements Comparable {
         this.blue = (p & 0xff);
     }
 
-    /*public void bottomToTop() { on va supprimer cette fonction si on a pas le temps d'intégrer la rotation, ...
-        pixelReader = image.getPixelReader();
+    public Image encryptImage() {
+        pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
         outputPixels = new int[width * height * 4];
-        //int j = 0;
-        //for (int i = inputPixels.length - 1; i > 0; i--) {
-        //    outputPixels[j++] = inputPixels[i];
-        //}
-        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, height * width * 4 - 1, width * 4);
-        this.filteredImage = writableImage;
-    }*/
+        int i = 0;
+        int encrypt = 0;
+        for (int pixel : inputPixels) {
+            changeRGB(pixel);
+            encrypt = ((Math.floorMod((this.opacity + Math.abs(password[0])), 255) << 24) + (Math.floorMod((this.red + Math.abs(password[1])), 255) << 16) + (Math.floorMod((this.blue + Math.abs(password[2])), 255) << 8) + (Math.floorMod((this.green + Math.abs(password[3])), 255)));
+            outputPixels[i++] = encrypt;
+        }
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
+        image = writableImage;
+        filteredImage = writableImage;
+        //On vide les attributs de l'image
+        inputPixels = new int[width * height * 4];
+        outputPixels = new int[width * height * 4];
+        pixelReader = image.getPixelReader();
+        pixelWriter = writableImage.getPixelWriter();
+        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
+        //BufferedWriter im = new BufferedWriter();
+        return writableImage;
+    }
+
+    public Image decryptImage() {
+        pixelReader = filteredImage.getPixelReader();
+        pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
+        writableImage = new WritableImage(pixelReader, width, height);
+        pixelWriter = writableImage.getPixelWriter();
+        outputPixels = new int[width * height * 4];
+        int i = 0;
+        int decrypt = 0;
+        for (int pixel : inputPixels) {
+            changeRGB(pixel);
+            decrypt = ((Math.floorMod((this.opacity - Math.abs(password[0])), 255) << 24) + (Math.floorMod((this.red - Math.abs(password[1])), 255) << 16) + (Math.floorMod((this.blue - Math.abs(password[2])), 255) << 8) + (Math.floorMod((this.green - Math.abs(password[3])), 255)));
+            outputPixels[i++] = decrypt;
+        }
+        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
+        return writableImage;
+    }
 
     public Image toBRG() {
         pixelReader = filteredImage.getPixelReader();
@@ -343,12 +384,12 @@ public class Picture implements Comparable {
     @Override
     public int compareTo(Object o) {
         Picture picture = (Picture) o;
-        if (this.file.getName().compareTo(picture.getFile().getName()) >0){
-            return 1 ;
-        }else if  (this.file.getName().compareTo(picture.getFile().getName()) <0){
-            return -1 ;
-        }else {
-            return 0 ;
+        if (this.file.getName().compareTo(picture.getFile().getName()) > 0) {
+            return 1;
+        } else if (this.file.getName().compareTo(picture.getFile().getName()) < 0) {
+            return -1;
+        } else {
+            return 0;
         }
 
     }

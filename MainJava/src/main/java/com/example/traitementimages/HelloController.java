@@ -28,7 +28,9 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -266,23 +268,32 @@ public class HelloController {
 
     @FXML
     public void addPassword() {
-        Alert create = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert createPassword = new Alert(Alert.AlertType.CONFIRMATION);
         ImageView secureIcon = new ImageView(Paths.get("src/main/resources/secure_icon.png").toFile().toURI().toString());
         secureIcon.setFitHeight(48);
         secureIcon.setFitWidth(48);
-        stage = (Stage) create.getDialogPane().getScene().getWindow();
+        stage = (Stage) createPassword.getDialogPane().getScene().getWindow();
         stage.getIcons().add(secureIcon.getImage());
-        double width = create.getDialogPane().getWidth();
+        double width = createPassword.getDialogPane().getWidth();
         PasswordField newPassword = new PasswordField();
         newPassword.setPromptText("Nouveau mot de passe");
         VBox parent = new VBox(newPassword);
         parent.setPadding(new Insets(10));
-        create.getDialogPane().setContent(parent);
-        create.getDialogPane().setGraphic(secureIcon);
-        create.getDialogPane().setMinWidth(width);
-        create.setTitle("Ajouter un mot de passe");
-        create.setHeaderText("Empêchez d'autres personnes d'accéder à votre image");
-        create.show();
+        createPassword.getDialogPane().setContent(parent);
+        createPassword.getDialogPane().setGraphic(secureIcon);
+        createPassword.getDialogPane().setMinWidth(width);
+        createPassword.setTitle("Ajouter un mot de passe");
+        createPassword.setHeaderText("Empêchez d'autres personnes d'accéder à votre image");
+        createPassword.show();
+        createPassword.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                SecureRandom secureImage = new SecureRandom(newPassword.getText().getBytes(StandardCharsets.UTF_8));
+                byte[] seed = new byte[4];
+                secureImage.nextBytes(seed);
+                currentPicture.setPassword(seed);
+                currentPicture.encryptImage();
+            }
+        });
     }
 
     public void getCurrentImage() {
