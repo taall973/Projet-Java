@@ -29,6 +29,7 @@ public class Picture implements Comparable {
     private ArrayList<Integer> changes;
     @XmlTransient
     private int[] inputPixels, outputPixels, cryptedPos;
+    byte[] hashPass;
     @XmlTransient
     private int width, height, red, green, blue, opacity;
     private int rotation, id;
@@ -281,11 +282,9 @@ public class Picture implements Comparable {
         hasher.nextBytes(salt);
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         SecureRandom shuffler = SecureRandom.getInstance("SHA1PRNG");
-        shuffler.setSeed(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
+        hashPass = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
+        shuffler.setSeed(hashPass);
         //Algorithme de Fisher-Yates
-        for (int i = 200; i < 220; i++) {
-            System.out.println(inputPixels[i]);
-        }
         outputPixels = inputPixels;
         for (int i = outputPixels.length - 1; i > 0; i--) {
             int j = shuffler.nextInt(i + 1);
@@ -295,10 +294,6 @@ public class Picture implements Comparable {
             cryptedPos[j] = tempC;
             outputPixels[i] = outputPixels[j];
             outputPixels[j] = tempO;
-        }
-        System.out.println("CRYPTED");
-        for (int i = 200; i < 220; i++) {
-            System.out.println(outputPixels[i] + " " + outputPixels[cryptedPos[i]]);
         }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
@@ -337,21 +332,21 @@ public class Picture implements Comparable {
         hasher.nextBytes(salt);
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         SecureRandom shuffler = SecureRandom.getInstance("SHA1PRNG");
-        shuffler.setSeed(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
-        //Algorithme de Fisher-Yates
-        System.out.println("DECRYPT1");
-        for (int i = 200; i < 220; i++) {
-            System.out.println(inputPixels[i] + " " + inputPixels[cryptedPos[i]]);
+        byte[] hashPass = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
+        boolean match = true;
+        for (int i = 0; i < hashPass.length; i++) {
+            if (hashPass[i] != this.hashPass[i]) {
+                match = false;
+                break;
+            }
         }
-        int count = 0;
-        for (Map.Entry<Integer, Integer> pixel : decrypt.entrySet()) {
-            outputPixels[count++] = pixel.getValue();
-        }
-        System.out.println("DECRYPT");
-        for (int i = 200; i < 220; i++) {
-            System.out.println(outputPixels[i]);
-        }
-        pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
+        if (match) {
+            shuffler.setSeed(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
+            int count = 0;
+            for (Map.Entry<Integer, Integer> pixel : decrypt.entrySet()) {
+                outputPixels[count++] = pixel.getValue();
+            }
+            pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
             for (int px : outputPixels) {
@@ -362,15 +357,16 @@ public class Picture implements Comparable {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        //On vide les attributs de l'image
-        image = writableImage;
-        filteredImage = writableImage;
+            //On vide les attributs de l'image
+            image = writableImage;
+            filteredImage = writableImage;
         /*inputPixels = new int[width * height * 4];
         outputPixels = new int[width * height * 4];
         pixelReader = image.getPixelReader();
         pixelWriter = writableImage.getPixelWriter();*/
-        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
-        //BufferedWriter im = new BufferedWriter();
+            //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
+            //BufferedWriter im = new BufferedWriter();
+        }
     }
 
     public Image toBRG() {
