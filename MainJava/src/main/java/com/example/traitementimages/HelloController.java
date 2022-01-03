@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -290,37 +291,21 @@ public class HelloController {
         createPassword.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    SecureRandom secureRandom = new SecureRandom();
-                    byte[] salt = new byte[16];
-                    secureRandom.nextBytes(salt);
-                    MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-                    messageDigest.update(salt);
-                    currentPicture.setMessageDigest(messageDigest);
-                    currentPicture.setPassword(messageDigest.digest(newPassword.getText().getBytes(StandardCharsets.UTF_8)));
-                    currentPicture.encryptImage();
+                    images.getPictures().get(currentPicture.getId()).encryptImage(newPassword.getText());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 System.out.println(newPassword.getText());
-                for (int i = 0; i < 4; i++) {
-                    System.out.println(currentPicture.getPassword()[i]);
-                }
             }
         });
         showImage();
     }
 
     @FXML
-    public void decrypt() {
+    public void decrypt() throws NoSuchAlgorithmException {
         System.out.println("Mot de passe");
-        byte[] seed = currentPicture.getMessageDigest().digest(password.getText().getBytes(StandardCharsets.UTF_8));
-
-//        currentPicture.setFilteredImage(currentPicture.decryptImage());
-        currentPicture.decryptImage();
+        images.getPictures().get(currentPicture.getId()).decryptImage(password.getText());
         System.out.println(password.getText());
-        for (int i = 0; i < 4; i++) {
-            System.out.println(currentPicture.getPassword()[i]);
-        }
         showImage();
     }
 

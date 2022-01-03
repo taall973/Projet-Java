@@ -7,12 +7,15 @@ import javafx.scene.image.*;
 
 import javax.crypto.spec.PBEKeySpec;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 @XmlRootElement
 
@@ -24,10 +27,8 @@ public class Picture implements Comparable {
     private File file;
     private ArrayList<String> tags;
     private ArrayList<Integer> changes;
-    private byte[] password;
-    private MessageDigest messageDigest;
     @XmlTransient
-    private int[] inputPixels, outputPixels;
+    private int[] inputPixels, outputPixels, cryptedPos;
     @XmlTransient
     private int width, height, red, green, blue, opacity;
     private int rotation, id;
@@ -55,6 +56,7 @@ public class Picture implements Comparable {
         height = (int) image.getHeight();
         inputPixels = new int[width * height * 4];
         outputPixels = new int[width * height * 4];
+        cryptedPos = new int[width * height * 4];
         pixelReader = image.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
@@ -100,22 +102,6 @@ public class Picture implements Comparable {
 
     public void setChanges(ArrayList<Integer> changes) {
         this.changes = changes;
-    }
-
-    public byte[] getPassword() {
-        return password;
-    }
-
-    public void setPassword(byte[] password) {
-        this.password = password;
-    }
-
-    public MessageDigest getMessageDigest() {
-        return messageDigest;
-    }
-
-    public void setMessageDigest(MessageDigest messageDigest) {
-        this.messageDigest = messageDigest;
     }
 
     public int[] getInputPixels() {
@@ -281,26 +267,39 @@ public class Picture implements Comparable {
         return writableImage;
     }*/
 
-    public Image encryptImage() {
+    public void encryptImage(String password) throws NoSuchAlgorithmException {
         pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
         outputPixels = new int[width * height * 4];
-        int o = password[0];
-        int r = password[1];
-        int g = password[2];
-        int b = password[3];
-        int i = 0;
-        int encrypt = 0;
-        changeRGB(inputPixels[0]);
-        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
-        for (int pixel : inputPixels) {
-            changeRGB(pixel);
-            outputPixels[i++] = ((((this.opacity + o) % 255) << 24) + (((this.red + r) % 255) << 16) + (((this.green + g) % 255) << 8) + ((this.blue + b) % 255));
+        for (int i = 0; i < cryptedPos.length; i++) {
+            cryptedPos[i] = i;
         }
-        changeRGB(outputPixels[0]);
-        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
+        SecureRandom hasher = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[20];
+        hasher.nextBytes(salt);
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        SecureRandom shuffler = SecureRandom.getInstance("SHA1PRNG");
+        shuffler.setSeed(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
+        //Algorithme de Fisher-Yates
+        for (int i = 200; i < 220; i++) {
+            System.out.println(inputPixels[i]);
+        }
+        outputPixels = inputPixels;
+        for (int i = outputPixels.length - 1; i > 0; i--) {
+            int j = shuffler.nextInt(i + 1);
+            int tempC = cryptedPos[i];
+            int tempO = outputPixels[i];
+            cryptedPos[i] = cryptedPos[j];
+            cryptedPos[j] = tempC;
+            outputPixels[i] = outputPixels[j];
+            outputPixels[j] = tempO;
+        }
+        System.out.println("CRYPTED");
+        for (int i = 200; i < 220; i++) {
+            System.out.println(outputPixels[i] + " " + outputPixels[cryptedPos[i]]);
+        }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         /*try {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
@@ -315,41 +314,63 @@ public class Picture implements Comparable {
         //On vide les attributs de l'image
         image = writableImage;
         filteredImage = writableImage;
-        inputPixels = new int[width * height * 4];
+        /*inputPixels = new int[width * height * 4];
         outputPixels = new int[width * height * 4];
         pixelReader = image.getPixelReader();
-        pixelWriter = writableImage.getPixelWriter();
+        pixelWriter = writableImage.getPixelWriter();*/
         //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
         //BufferedWriter im = new BufferedWriter();
-        return writableImage;
     }
 
-    public Image decryptImage() {
+    public void decryptImage(String password) throws NoSuchAlgorithmException {
         pixelReader = filteredImage.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), inputPixels, 0, width * 4);
         writableImage = new WritableImage(pixelReader, width, height);
         pixelWriter = writableImage.getPixelWriter();
         outputPixels = new int[width * height * 4];
-        int i = 0;
-        int decrypt = 0;
-        int o = password[0];
-        int r = password[1];
-        int g = password[2];
-        int b = password[3];
-        changeRGB(inputPixels[0]);
-        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
-        for (int pixel : inputPixels) {
-            changeRGB(pixel);
-            //outputPixels[i++] = ((((this.opacity - o) % 256) << 24) + (((this.red - r) % 256) << 16) + (((this.green - g) % 256) << 8) + ((this.blue - b) % 256));
-            outputPixels[i++] = ((Math.floorMod(this.opacity - o, 256)-1 << 24) + (Math.floorMod(this.red - r, 256) << 16) + (Math.floorMod(this.green - g, 256) << 8) + (Math.floorMod(this.blue - b, 256)));
-            // outputPixels[i++] = pixel <<1 ;
+        Map<Integer, Integer> decrypt = new TreeMap<>();
+        for (int i = 0; i < inputPixels.length; i++) {
+            decrypt.put(cryptedPos[i], inputPixels[i]);
         }
-        changeRGB(outputPixels[0]);
-        System.out.println(this.opacity + " " + this.red + " " + this.green + " " + this.blue);
+        SecureRandom hasher = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[20];
+        hasher.nextBytes(salt);
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        SecureRandom shuffler = SecureRandom.getInstance("SHA1PRNG");
+        shuffler.setSeed(messageDigest.digest(password.getBytes(StandardCharsets.UTF_8)));
+        //Algorithme de Fisher-Yates
+        System.out.println("DECRYPT1");
+        for (int i = 200; i < 220; i++) {
+            System.out.println(inputPixels[i] + " " + inputPixels[cryptedPos[i]]);
+        }
+        int count = 0;
+        for (Map.Entry<Integer, Integer> pixel : decrypt.entrySet()) {
+            outputPixels[count++] = pixel.getValue();
+        }
+        System.out.println("DECRYPT");
+        for (int i = 200; i < 220; i++) {
+            System.out.println(outputPixels[i]);
+        }
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
+        /*try {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+            for (int px : outputPixels) {
+                out.write(px);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        //On vide les attributs de l'image
         image = writableImage;
         filteredImage = writableImage;
-        return writableImage;
+        /*inputPixels = new int[width * height * 4];
+        outputPixels = new int[width * height * 4];
+        pixelReader = image.getPixelReader();
+        pixelWriter = writableImage.getPixelWriter();*/
+        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
+        //BufferedWriter im = new BufferedWriter();
     }
 
     public Image toBRG() {
