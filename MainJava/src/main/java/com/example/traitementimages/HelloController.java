@@ -295,7 +295,6 @@ public class HelloController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.println(newPassword.getText());
             }
         });
         showImage();
@@ -303,9 +302,7 @@ public class HelloController {
 
     @FXML
     public void decrypt() throws NoSuchAlgorithmException {
-        System.out.println("Mot de passe");
         images.getPictures().get(currentPicture.getId()).decryptImage(password.getText());
-        System.out.println(password.getText());
         showImage();
     }
 
