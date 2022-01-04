@@ -248,7 +248,7 @@ public class Picture implements Comparable {
         SecureRandom shuffler = SecureRandom.getInstance("SHA1PRNG");
         hashPass = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
         shuffler.setSeed(hashPass);
-        //Algorithme de Fisher-Yates
+
         outputPixels = inputPixels;
         for (int i = outputPixels.length - 1; i > 0; i--) {
             int j = shuffler.nextInt(i + 1);
@@ -440,3 +440,7 @@ public class Picture implements Comparable {
 
     }
 }
+// source pour application filtre : https://stackoverflow.com/questions/64952788/javafx-apply-filter-on-pixels-of-an-image
+// source Algorithme de Fisher-Yates : https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/ ( a partir de ligne 251 : Picture.java)
+// source structure DAO pour XML : https://www.tutorialspoint.com/design_pattern/data_access_object_pattern.htm
+// sauvegarder image : on a pas reussi à le faire marcher on  a mis  en commentaire le code  : https://stackoverflow.com/questions/27054672/writing-javafx-scene-image-image-to-file
