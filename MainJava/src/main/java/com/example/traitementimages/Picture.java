@@ -262,18 +262,24 @@ public class Picture implements Comparable {
         pixelWriter.setPixels(0, 0, width, height, PixelFormat.getIntArgbInstance(), outputPixels, 0, width * 4);
         image = writableImage;
         filteredImage = writableImage;
-        /*try {
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-            for (int px : outputPixels) {
-                out.write(px);
+        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
+        //saveImage();
+    }
+
+    public void saveImage() {
+        byte[] buffer = new byte[width * height * 4];
+        pixelReader = image.getPixelReader();
+        pixelReader.getPixels(0, 0, width, height, PixelFormat.getByteBgraInstance(), buffer, 0, width * 4);
+        try {
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file),buffer.length);
+            for (byte b : buffer) {
+                out.write(b);
             }
             out.flush();
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        //Et on enregistre le résultat dans l'image sauvegardée dans le dossier
-        //BufferedWriter im = new BufferedWriter();
+        }
     }
 
     public void decryptImage(String password) throws NoSuchAlgorithmException {
